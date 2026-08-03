@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/AdminShell";
+import { AdminFrame } from "@/components/AdminFrame";
 import { DeleteButton } from "@/components/DeleteButton";
 import { FeaturedToggle } from "@/components/FeaturedToggle";
 import { getAdminLocale } from "@/lib/admin-locale";
@@ -8,6 +8,7 @@ import { isAdminAuthenticated } from "@/lib/auth";
 import { listCategories } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
 import { pickLocalized } from "@/lib/i18n";
+import { productCover } from "@/lib/format";
 import { listProducts } from "@/lib/products";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +24,7 @@ export default async function AdminProductsPage() {
   const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c]));
 
   return (
-    <AdminShell title={dict.admin.products} dict={dict} locale={locale}>
+    <AdminFrame title={dict.admin.products}>
       <div className="mb-5 flex justify-end">
         <Link href="/admin/products/new" className="btn-primary">
           新建商品
@@ -47,9 +48,13 @@ export default async function AdminProductsPage() {
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <div className="h-12 w-12 shrink-0 overflow-hidden border border-line bg-paper">
-                      {item.imageUrl ? (
+                      {productCover(item) ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={item.imageUrl} alt="" className="h-full w-full object-cover" />
+                        <img
+                          src={productCover(item)}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
                       ) : null}
                     </div>
                     <div>
@@ -81,6 +86,6 @@ export default async function AdminProductsPage() {
           </tbody>
         </table>
       </div>
-    </AdminShell>
+    </AdminFrame>
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatPrice } from "@/lib/format";
+import { formatPrice, productCover } from "@/lib/format";
 import type { Dictionary } from "@/lib/dictionaries";
 import type { Locale, Product } from "@/lib/types";
 
@@ -12,16 +12,17 @@ export function ProductCard({
   locale: Locale;
   dict: Dictionary;
 }) {
+  const cover = productCover(product);
   return (
     <Link
       href={`/${locale}/products/${product.id}`}
       className="group border border-line bg-panel transition hover:border-copper"
     >
       <div className="aspect-[4/3] bg-paper">
-        {product.imageUrl ? (
+        {cover ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={product.imageUrl}
+            src={cover}
             alt={product.name}
             className="h-full w-full object-cover"
           />

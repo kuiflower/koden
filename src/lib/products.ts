@@ -13,13 +13,18 @@ function textField(value: unknown): string {
   return "";
 }
 
-/** 将旧双语商品数据归一为单文字段 */
-function normalizeProduct(raw: Product): Product {
+/** 将旧双语商品数据归一为单文字段；兼容旧 imageUrl */
+function normalizeProduct(raw: Product & { imageUrl?: string }): Product {
+  const fromLegacy = raw.imageUrl ? [raw.imageUrl] : [];
+  const coverImages = Array.isArray(raw.coverImages)
+    ? raw.coverImages.filter(Boolean)
+    : fromLegacy;
   return {
     ...raw,
     name: textField(raw.name),
     summary: textField(raw.summary),
     description: textField(raw.description),
+    coverImages: coverImages.length ? coverImages : fromLegacy,
     featured: Boolean(raw.featured),
     detailImages: Array.isArray(raw.detailImages) ? raw.detailImages : [],
   };

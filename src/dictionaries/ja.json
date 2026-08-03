@@ -1,6 +1,6 @@
 {
   "brand": "KODEN",
-  "tagline": "道具のある暮らしを、もっと正確に。",
+  "tagline": "リユースから新品・オリジナル製品まで。",
   "nav": {
     "home": "ホーム",
     "categories": "カテゴリー",
@@ -8,8 +8,27 @@
     "admin": "管理"
   },
   "home": {
-    "heroTitle": "KODEN",
-    "heroLead": "工具実店舗の紹介と商品展示。カテゴリーから選び、来店予約で現物を確認できます。",
+    "heroTitle": "工具の実店舗",
+    "heroLead": "工具・空調資材のことなら株式会社 工電へ。",
+    "aboutLabel": "ABOUT",
+    "aboutTitle": "株式会社 工電について",
+    "aboutLead": "リユースから新品・オリジナル製品まで。工具・空調資材のことなら株式会社 工電へ。",
+    "aboutBody": [
+      "株式会社 工電は、リユース工具・輸入工具・エアコン・空調施工資材を幅広く取り扱う専門企業です。",
+      "プロの職人様から法人様、DIYユーザーまで、現場で本当に役立つ商品を厳選してご提供しています。",
+      "中古工具の販売だけでなく、優れた輸入工具を取り入れ、日本市場へ展開。さらに、高品質なオリジナルペアコイルやドレンホースなど、空調施工に欠かせない資材も取り揃えています。"
+    ],
+    "aboutMotto": "良いものを、より良い価格で。",
+    "aboutProductsTitle": "取扱商品",
+    "aboutProducts": [
+      "リユース工具",
+      "海外輸入工具",
+      "家庭用・業務用エアコン",
+      "オリジナルペアコイル",
+      "ドレンホース",
+      "空調施工資材・電材各種"
+    ],
+    "aboutClosing": "株式会社 工電は、これからも品質・価格・サービスにこだわり、皆様の信頼に応え続けます。",
     "categoriesTitle": "商品カテゴリー",
     "categoriesLead": "用途別に整理したカテゴリーから、店頭の商品を探せます。",
     "visitTitle": "来店予約",
@@ -18,7 +37,11 @@
     "viewCategory": "カテゴリーを見る",
     "viewAllInCategory": "このカテゴリーの全商品を見る",
     "emptyCategories": "公開中のカテゴリーはまだありません。",
-    "emptyFeatured": "このカテゴリーのホームおすすめ商品はまだありません。"
+    "emptyFeatured": "このカテゴリーのホームおすすめ商品はまだありません。",
+    "announcementsTitle": "お知らせ",
+    "emptyAnnouncements": "現在お知らせはありません。",
+    "featuredTitle": "おすすめ商品",
+    "featuredLead": "店頭のおすすめ商品をカテゴリー別にご紹介します。"
   },
   "categories": {
     "title": "カテゴリー一覧",
@@ -61,6 +84,9 @@
     "login": "ログイン",
     "logout": "ログアウト",
     "overview": "概要",
+    "announcements": "お知らせ",
+    "newAnnouncement": "新規お知らせ",
+    "editAnnouncement": "お知らせ編集",
     "categories": "カテゴリー",
     "products": "商品",
     "bookings": "商品予約",

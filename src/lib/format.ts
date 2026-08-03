@@ -26,6 +26,10 @@ export function formatPrice(
   }).format(price);
 }
 
+export function productCover(product: { coverImages?: string[] }) {
+  return product.coverImages?.[0] || "";
+}
+
 export function slugify(input: string) {
   return input
     .trim()

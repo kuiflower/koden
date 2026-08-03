@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AnnouncementList } from "@/components/AnnouncementList";
+import { BrandMark } from "@/components/BrandMark";
 import { ProductCard } from "@/components/ProductCard";
+import { listAnnouncements } from "@/lib/announcements";
 import { listCategories } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
 import { isLocale, pickLocalized } from "@/lib/i18n";
@@ -29,36 +32,33 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const dict = await getDictionary(lang);
-  const categories = await listCategories({ publishedOnly: true });
-  const products = await listProducts({ publishedOnly: true });
+  const [announcements, categories, products] = await Promise.all([
+    listAnnouncements({ publishedOnly: true }),
+    listCategories({ publishedOnly: true }),
+    listProducts({ publishedOnly: true }),
+  ]);
 
   return (
     <main>
-      <section className="relative isolate min-h-[78vh] overflow-hidden border-b border-line">
+      <section className="relative isolate min-h-[42vh] overflow-hidden border-b border-line md:min-h-[72vh]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/samples/hero.jpg"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/88 via-ink/55 to-ink/20" />
-        <div className="relative mx-auto flex min-h-[78vh] max-w-6xl items-end px-5 py-16 md:items-center md:px-8 md:py-24">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/25" />
+        <div className="relative mx-auto flex min-h-[42vh] max-w-6xl items-end px-5 py-8 md:min-h-[72vh] md:items-center md:px-8 md:py-24">
           <div className="reveal max-w-xl text-white">
-            <p className="text-xs tracking-[0.28em] text-copper">{dict.tagline}</p>
-            <h1 className="font-brand mt-5 text-5xl md:text-7xl">
-              {dict.home.heroTitle}
-            </h1>
-            <p className="mt-6 text-base leading-7 text-white/80 md:text-lg">
+            <BrandMark href={null} variant="hero" tone="dark" />
+            <p className="mt-4 text-sm leading-6 text-white/90 md:mt-6 md:text-lg md:leading-7">
               {dict.home.heroLead}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={`/${lang}/categories`} className="btn-primary">
+            <div className="mt-5 flex flex-wrap gap-2.5 md:mt-8 md:gap-3">
+              <Link href={`/${lang}/categories`} className="btn-primary-on-dark">
                 {dict.nav.categories}
               </Link>
-              <Link
-                href={`/${lang}/visit`}
-                className="btn-ghost border-white/30 text-white hover:border-copper hover:text-copper"
-              >
+              <Link href={`/${lang}/visit`} className="btn-ghost-on-dark">
                 {dict.home.visitCta}
               </Link>
             </div>
@@ -66,79 +66,142 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8">
-        <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-ink md:text-3xl">
-            {dict.home.categoriesTitle}
+      <section className="bg-paper">
+        <div className="mx-auto max-w-3xl px-5 py-12 md:px-8 md:py-16">
+          <h2 className="mb-8 text-center text-2xl font-semibold text-ink md:mb-10 md:text-3xl">
+            {dict.home.announcementsTitle}
           </h2>
-          <p className="mt-2 text-sm text-steel">{dict.home.categoriesLead}</p>
+          <AnnouncementList
+            items={announcements}
+            emptyText={dict.home.emptyAnnouncements}
+          />
         </div>
-
-        {categories.length === 0 ? (
-          <p className="text-sm text-steel">{dict.home.emptyCategories}</p>
-        ) : (
-          <div className="space-y-16">
-            {categories.map((category) => {
-              const featured = products.filter(
-                (p) => p.categoryId === category.id && p.featured,
-              );
-              return (
-                <section key={category.id} className="border-t border-line pt-10">
-                  <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-                    <div className="flex items-start gap-4">
-                      {category.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={category.imageUrl}
-                          alt=""
-                          className="hidden h-16 w-16 border border-line object-cover sm:block"
-                        />
-                      ) : null}
-                      <div>
-                        <h3 className="text-xl font-semibold text-ink md:text-2xl">
-                          {pickLocalized(category.name, lang)}
-                        </h3>
-                        <p className="mt-1 max-w-2xl text-sm text-steel">
-                          {pickLocalized(category.description, lang)}
-                        </p>
-                      </div>
-                    </div>
-                    <Link
-                      href={`/${lang}/categories/${category.slug}`}
-                      className="btn-ghost px-4 py-2 text-xs"
-                    >
-                      {dict.home.viewAllInCategory}
-                    </Link>
-                  </div>
-
-                  {featured.length === 0 ? (
-                    <p className="text-sm text-steel">{dict.home.emptyFeatured}</p>
-                  ) : (
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {featured.map((product) => (
-                        <ProductCard
-                          key={product.id}
-                          product={product}
-                          locale={lang}
-                          dict={dict}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </section>
-              );
-            })}
-          </div>
-        )}
       </section>
 
-      <section className="border-y border-line bg-panel/70">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 md:flex-row md:items-center md:justify-between md:px-8">
-          <div>
-            <h2 className="text-2xl font-semibold text-ink">{dict.home.visitTitle}</h2>
-            <p className="mt-2 max-w-xl text-sm text-steel">{dict.home.visitLead}</p>
+      <section className="border-t border-line bg-panel">
+        <div className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+          <div className="mb-10">
+            <h2 className="text-2xl font-semibold text-ink md:text-3xl">
+              {dict.home.featuredTitle}
+            </h2>
+            <p className="mt-2 text-sm text-steel">{dict.home.featuredLead}</p>
           </div>
-          <Link href={`/${lang}/visit`} className="btn-primary">
+
+          {categories.length === 0 ? (
+            <p className="text-sm text-steel">{dict.home.emptyCategories}</p>
+          ) : (
+            <div className="space-y-16">
+              {categories.map((category) => {
+                const featured = products.filter(
+                  (p) => p.categoryId === category.id && p.featured,
+                );
+                return (
+                  <section key={category.id} className="border-t border-line pt-10">
+                    <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+                      <div className="flex items-start gap-4">
+                        {category.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={category.imageUrl}
+                            alt=""
+                            className="hidden h-16 w-16 border border-line object-cover sm:block"
+                          />
+                        ) : null}
+                        <div>
+                          <h3 className="text-xl font-semibold text-ink md:text-2xl">
+                            {pickLocalized(category.name, lang)}
+                          </h3>
+                          <p className="mt-1 max-w-2xl text-sm text-steel">
+                            {pickLocalized(category.description, lang)}
+                          </p>
+                        </div>
+                      </div>
+                      <Link
+                        href={`/${lang}/categories/${category.slug}`}
+                        className="btn-ghost px-4 py-2 text-xs"
+                      >
+                        {dict.home.viewAllInCategory}
+                      </Link>
+                    </div>
+
+                    {featured.length === 0 ? (
+                      <p className="text-sm text-steel">{dict.home.emptyFeatured}</p>
+                    ) : (
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {featured.map((product) => (
+                          <ProductCard
+                            key={product.id}
+                            product={product}
+                            locale={lang}
+                            dict={dict}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="border-t border-line bg-panel">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.15fr_0.85fr] md:gap-16 md:px-8 md:py-20">
+          <div>
+            <p className="text-xs tracking-[0.28em] text-steel">
+              {dict.home.aboutLabel}
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink md:text-4xl">
+              {dict.home.aboutTitle}
+            </h2>
+            <p className="mt-4 text-base leading-7 text-ink-soft md:text-lg md:leading-8">
+              {dict.home.aboutLead}
+            </p>
+            <div className="mt-6 space-y-4 text-sm leading-7 text-steel md:text-[0.95rem]">
+              {dict.home.aboutBody.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+            <p className="font-brand mt-8 text-xl tracking-[0.04em] text-ink md:text-2xl">
+              「{dict.home.aboutMotto}」
+            </p>
+            <p className="mt-6 text-sm leading-7 text-steel">
+              {dict.home.aboutClosing}
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-sm tracking-[0.2em] text-steel">
+              {dict.home.aboutProductsTitle}
+            </h3>
+            <ul className="mt-5 space-y-0">
+              {dict.home.aboutProducts.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center gap-3 border-b border-line py-3.5 text-sm text-ink last:border-b-0 md:text-base"
+                >
+                  <span className="h-1.5 w-1.5 shrink-0 bg-brand-yellow" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-line bg-panel">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 md:flex-row md:items-center md:justify-between md:gap-8 md:px-8 md:py-12">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-xl font-semibold text-ink md:text-2xl">
+              {dict.home.visitTitle}
+            </h2>
+            <p className="mt-2 text-sm text-steel">{dict.home.visitLead}</p>
+          </div>
+          <Link
+            href={`/${lang}/visit`}
+            className="btn-primary w-full shrink-0 md:w-auto md:min-w-[14rem]"
+          >
             {dict.home.visitCta}
           </Link>
         </div>

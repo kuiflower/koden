@@ -39,7 +39,8 @@ export type Product = {
   price: number | null;
   currency: "JPY" | "CNY";
   showPrice: boolean;
-  imageUrl: string;
+  /** 封面图（支持多张；第一张用于列表缩略图） */
+  coverImages: string[];
   detailImages: string[];
   /** 首页推荐（按分类栏目展示） */
   featured: boolean;
@@ -59,7 +60,7 @@ export type ProductInput = {
   price: number | null;
   currency: "JPY" | "CNY";
   showPrice: boolean;
-  imageUrl: string;
+  coverImages: string[];
   detailImages: string[];
   featured: boolean;
   published: boolean;
@@ -106,4 +107,26 @@ export type StoreVisitInput = {
   phone: string;
   visitAt: string;
   note?: string;
+};
+
+/** 首页活动通知 / お知らせ */
+export type AnnouncementIcon = "info" | "gift" | "doc" | "calendar" | "notice";
+
+export type Announcement = {
+  id: string;
+  title: string;
+  body: string;
+  icon: AnnouncementIcon;
+  sortOrder: number;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AnnouncementInput = {
+  title: string;
+  body: string;
+  icon: AnnouncementIcon;
+  sortOrder: number;
+  published: boolean;
 };

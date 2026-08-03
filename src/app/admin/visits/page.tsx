@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/AdminShell";
+import { AdminFrame } from "@/components/AdminFrame";
 import { VisitTable } from "@/components/VisitTable";
 import { getAdminLocale } from "@/lib/admin-locale";
 import { isAdminAuthenticated } from "@/lib/auth";
@@ -15,8 +15,8 @@ export default async function AdminVisitsPage() {
   const items = await listVisits();
 
   return (
-    <AdminShell title={dict.admin.visits} dict={dict} locale={locale}>
-      <VisitTable items={items} />
-    </AdminShell>
+    <AdminFrame title={dict.admin.visits}>
+      <VisitTable items={items} locale={locale} />
+    </AdminFrame>
   );
 }

@@ -31,7 +31,9 @@ export function ProductForm({
     initial?.currency || "JPY",
   );
   const [showPrice, setShowPrice] = useState(initial?.showPrice ?? true);
-  const [imageUrl, setImageUrl] = useState(initial?.imageUrl || "");
+  const [coverImages, setCoverImages] = useState<string[]>(
+    initial?.coverImages || [],
+  );
   const [detailImages, setDetailImages] = useState<string[]>(
     initial?.detailImages || [],
   );
@@ -55,7 +57,7 @@ export function ProductForm({
       price: price === "" ? null : Number(price),
       currency,
       showPrice,
-      imageUrl,
+      coverImages,
       detailImages,
       featured,
       published,
@@ -161,16 +163,20 @@ export function ProductForm({
         </label>
       </div>
       <ImageUpload
-        label="封面图"
-        value={imageUrl}
-        onChange={(next) => setImageUrl(typeof next === "string" ? next : next[0] || "")}
+        label="封面图（可多选，第一张作为列表缩略图）"
+        multiple
+        value={coverImages}
+        onChange={(next) =>
+          setCoverImages(Array.isArray(next) ? next : next ? [next] : [])
+        }
       />
       <ImageUpload
-        label="详情图"
+        label="详情图（可多选；保存后显示在商品页下方）"
         multiple
         value={detailImages}
         onChange={(next) => setDetailImages(Array.isArray(next) ? next : next ? [next] : [])}
       />
+      <p className="text-xs text-steel">上传图片后，请点击底部「保存商品」才会生效。</p>
       <label className="flex items-center gap-2 text-sm">
         <input
           type="checkbox"

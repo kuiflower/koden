@@ -89,7 +89,7 @@ export function ProductBookingForm({
         />
       </label>
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
-      <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60">
+      <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
         {loading ? "..." : dict.product.submit}
       </button>
     </form>

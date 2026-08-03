@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/AdminShell";
+import { AdminFrame } from "@/components/AdminFrame";
 import { DeleteButton } from "@/components/DeleteButton";
 import { getAdminLocale } from "@/lib/admin-locale";
 import { isAdminAuthenticated } from "@/lib/auth";
@@ -17,7 +17,7 @@ export default async function AdminCategoriesPage() {
   const items = await listCategories();
 
   return (
-    <AdminShell title={dict.admin.categories} dict={dict} locale={locale}>
+    <AdminFrame title={dict.admin.categories}>
       <div className="mb-5 flex justify-end">
         <Link href="/admin/categories/new" className="btn-primary">
           新建分类
@@ -59,6 +59,6 @@ export default async function AdminCategoriesPage() {
           </tbody>
         </table>
       </div>
-    </AdminShell>
+    </AdminFrame>
   );
 }

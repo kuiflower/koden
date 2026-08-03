@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { BrandMark } from "@/components/BrandMark";
 import type { Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { localeLabel, locales } from "@/lib/i18n";
@@ -11,21 +12,35 @@ export function AdminShell({
   title,
   dict,
   locale,
+  badges,
 }: {
   children: React.ReactNode;
   title: string;
   dict: Dictionary;
   locale: Locale;
+  badges?: {
+    bookings?: number;
+    visits?: number;
+  };
 }) {
   const pathname = usePathname();
   const router = useRouter();
 
   const nav = [
     { href: "/admin", label: dict.admin.overview, exact: true },
+    { href: "/admin/announcements", label: dict.admin.announcements },
     { href: "/admin/categories", label: dict.admin.categories },
     { href: "/admin/products", label: dict.admin.products },
-    { href: "/admin/bookings", label: dict.admin.bookings },
-    { href: "/admin/visits", label: dict.admin.visits },
+    {
+      href: "/admin/bookings",
+      label: dict.admin.bookings,
+      badge: badges?.bookings ?? 0,
+    },
+    {
+      href: "/admin/visits",
+      label: dict.admin.visits,
+      badge: badges?.visits ?? 0,
+    },
   ];
 
   async function logout() {
@@ -46,9 +61,10 @@ export function AdminShell({
     <div className="min-h-screen bg-paper">
       <header className="border-b border-line bg-panel/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-5 md:px-8">
-          <Link href="/admin" className="font-brand text-xl text-ink">
-            KODEN ADMIN
-          </Link>
+          <div className="flex items-center gap-3">
+            <BrandMark href="/admin" variant="admin" />
+            <span className="text-xs tracking-[0.18em] text-steel">ADMIN</span>
+          </div>
           <div className="flex items-center gap-2">
             <span className="mr-1 text-xs text-steel">{dict.admin.language}</span>
             {locales.map((loc) => (
@@ -56,11 +72,7 @@ export function AdminShell({
                 key={loc}
                 type="button"
                 onClick={() => void switchLang(loc)}
-                className={`border px-2.5 py-1 text-xs ${
-                  loc === locale
-                    ? "border-ink bg-ink text-white"
-                    : "border-line text-ink/65"
-                }`}
+                className={loc === locale ? "lang-chip lang-chip-active" : "lang-chip"}
               >
                 {localeLabel(loc)}
               </button>
@@ -74,22 +86,29 @@ export function AdminShell({
             </button>
           </div>
         </div>
-        <nav className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-5 pb-3 md:px-8">
+        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 pb-3 pt-3 md:px-8">
           {nav.map((item) => {
-            const active = item.exact
-              ? pathname === item.href
-              : pathname.startsWith(item.href);
+            const active =
+              "exact" in item && item.exact
+                ? pathname === item.href
+                : pathname.startsWith(item.href);
+            const badge = "badge" in item ? item.badge : 0;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`whitespace-nowrap px-3.5 py-1.5 text-sm transition ${
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap px-3.5 py-1.5 text-sm transition ${
                   active
-                    ? "bg-ink text-white"
+                    ? "nav-chip-active"
                     : "text-ink/60 hover:bg-panel hover:text-ink"
                 }`}
               >
                 {item.label}
+                {badge && badge > 0 ? (
+                  <span className="inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white">
+                    {badge > 99 ? "99+" : badge}
+                  </span>
+                ) : null}
               </Link>
             );
           })}

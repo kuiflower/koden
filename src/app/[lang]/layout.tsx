@@ -19,6 +19,7 @@ export default async function LocaleLayout({
   return (
     <div
       lang={htmlLang(lang)}
+      className="flex min-h-screen flex-col"
       style={{
         fontFamily:
           lang === "ja"
@@ -27,7 +28,7 @@ export default async function LocaleLayout({
       }}
     >
       <SiteHeader locale={lang} dict={dict} />
-      {children}
+      <div className="flex-1">{children}</div>
       <SiteFooter locale={lang} dict={dict} />
     </div>
   );

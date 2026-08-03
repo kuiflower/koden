@@ -1,6 +1,6 @@
 {
   "brand": "KODEN",
-  "tagline": "把精准的工具，带到你的工作与生活。",
+  "tagline": "从二手翻新到新品与原创产品。",
   "nav": {
     "home": "首页",
     "categories": "商品分类",
@@ -8,8 +8,27 @@
     "admin": "后台"
   },
   "home": {
-    "heroTitle": "KODEN",
-    "heroLead": "工具实体店介绍与商品展示。按分类浏览，也可预约到店查看实物。",
+    "heroTitle": "工具实体店",
+    "heroLead": "工具与空调资材，就找株式会社工電。",
+    "aboutLabel": "ABOUT",
+    "aboutTitle": "关于株式会社工電",
+    "aboutLead": "从二手翻新到新品与原创产品。工具与空调资材，就找株式会社工電。",
+    "aboutBody": [
+      "株式会社工電是一家专业经营二手工具、进口工具、空调及空调施工资材的企业。",
+      "无论是专业工匠、企业客户，还是 DIY 用户，我们都精选真正适合现场使用的商品。",
+      "除二手工具销售外，我们也引入优质进口工具并拓展日本市场；同时备齐高品质原创配对铜管、排水软管等空调施工必备资材。"
+    ],
+    "aboutMotto": "好商品，更好的价格。",
+    "aboutProductsTitle": "经营商品",
+    "aboutProducts": [
+      "二手翻新工具",
+      "海外进口工具",
+      "家用 / 商用空调",
+      "原创配对铜管",
+      "排水软管",
+      "空调施工资材与电工材料"
+    ],
+    "aboutClosing": "株式会社工電将持续坚持品质、价格与服务，回应大家的信任。",
     "categoriesTitle": "商品分类",
     "categoriesLead": "按用途整理的分类，方便快速找到店内商品。",
     "visitTitle": "预约到店",
@@ -18,7 +37,11 @@
     "viewCategory": "查看分类",
     "viewAllInCategory": "查看该分类全部商品",
     "emptyCategories": "暂无已发布的分类。",
-    "emptyFeatured": "该分类暂无首页推荐商品。"
+    "emptyFeatured": "该分类暂无首页推荐商品。",
+    "announcementsTitle": "通知",
+    "emptyAnnouncements": "暂无通知。",
+    "featuredTitle": "推荐商品",
+    "featuredLead": "按分类展示店内推荐商品。"
   },
   "categories": {
     "title": "全部分类",
@@ -61,6 +84,9 @@
     "login": "登录",
     "logout": "退出",
     "overview": "总览",
+    "announcements": "活动通知",
+    "newAnnouncement": "新建通知",
+    "editAnnouncement": "编辑通知",
     "categories": "分类管理",
     "products": "商品管理",
     "bookings": "商品预订",

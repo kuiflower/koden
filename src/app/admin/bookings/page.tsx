@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/AdminShell";
+import { AdminFrame } from "@/components/AdminFrame";
 import { BookingTable } from "@/components/BookingTable";
 import { getAdminLocale } from "@/lib/admin-locale";
 import { isAdminAuthenticated } from "@/lib/auth";
@@ -15,8 +15,8 @@ export default async function AdminBookingsPage() {
   const items = await listBookings();
 
   return (
-    <AdminShell title={dict.admin.bookings} dict={dict} locale={locale}>
-      <BookingTable items={items} />
-    </AdminShell>
+    <AdminFrame title={dict.admin.bookings}>
+      <BookingTable items={items} locale={locale} />
+    </AdminFrame>
   );
 }

@@ -1,12 +1,20 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import {
+  BOOKING_STATUSES,
+  bookingStatusLabel,
+} from "@/lib/booking-status";
 import { formatDateTime } from "@/lib/format";
-import type { BookingStatus, StoreVisit } from "@/lib/types";
+import type { BookingStatus, Locale, StoreVisit } from "@/lib/types";
 
-const STATUSES: BookingStatus[] = ["new", "confirmed", "done", "cancelled"];
-
-export function VisitTable({ items }: { items: StoreVisit[] }) {
+export function VisitTable({
+  items,
+  locale,
+}: {
+  items: StoreVisit[];
+  locale: Locale;
+}) {
   const router = useRouter();
 
   async function setStatus(id: string, status: BookingStatus) {
@@ -56,15 +64,15 @@ export function VisitTable({ items }: { items: StoreVisit[] }) {
               </td>
               <td className="px-4 py-3">
                 <select
-                  className="field py-1.5"
+                  className="field min-w-[8rem] py-1.5"
                   value={item.status}
                   onChange={(e) =>
                     void setStatus(item.id, e.target.value as BookingStatus)
                   }
                 >
-                  {STATUSES.map((status) => (
+                  {BOOKING_STATUSES.map((status) => (
                     <option key={status} value={status}>
-                      {status}
+                      {bookingStatusLabel(status, locale)}
                     </option>
                   ))}
                 </select>

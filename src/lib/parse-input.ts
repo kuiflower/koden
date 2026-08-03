@@ -1,4 +1,10 @@
-import type { CategoryInput, LocalizedString, ProductInput } from "@/lib/types";
+import type {
+  AnnouncementIcon,
+  AnnouncementInput,
+  CategoryInput,
+  LocalizedString,
+  ProductInput,
+} from "@/lib/types";
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -90,9 +96,38 @@ export function parseProductInput(body: unknown): ProductInput | null {
     price: asNumber(raw.price),
     currency,
     showPrice: asBoolean(raw.showPrice, true),
-    imageUrl: asString(raw.imageUrl),
+    coverImages: (() => {
+      const covers = asStringArray(raw.coverImages);
+      if (covers.length) return covers;
+      const legacy = asString(raw.imageUrl);
+      return legacy ? [legacy] : [];
+    })(),
     detailImages: asStringArray(raw.detailImages),
     featured: asBoolean(raw.featured, false),
+    published: asBoolean(raw.published, true),
+  };
+}
+
+const ANNOUNCEMENT_ICONS: AnnouncementIcon[] = [
+  "info",
+  "gift",
+  "doc",
+  "calendar",
+  "notice",
+];
+
+export function parseAnnouncementInput(body: unknown): AnnouncementInput | null {
+  if (!body || typeof body !== "object") return null;
+  const raw = body as Record<string, unknown>;
+  const title = asString(raw.title);
+  if (!title) return null;
+  const iconRaw = asString(raw.icon) as AnnouncementIcon;
+  const icon = ANNOUNCEMENT_ICONS.includes(iconRaw) ? iconRaw : "notice";
+  return {
+    title,
+    body: asString(raw.body),
+    icon,
+    sortOrder: asNumber(raw.sortOrder) ?? 0,
     published: asBoolean(raw.published, true),
   };
 }

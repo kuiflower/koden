@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { BrandMark } from "@/components/BrandMark";
 import type { Dictionary } from "@/lib/dictionaries";
 
 export function AdminLoginForm({ dict }: { dict: Dictionary }) {
@@ -32,7 +33,8 @@ export function AdminLoginForm({ dict }: { dict: Dictionary }) {
       onSubmit={onSubmit}
       className="mx-auto w-full max-w-md space-y-4 border border-line bg-panel p-6 md:p-8"
     >
-      <h1 className="font-brand text-3xl text-ink">{dict.admin.loginTitle}</h1>
+      <BrandMark href={null} variant="header" className="mb-2" />
+      <h1 className="text-xl font-semibold text-ink">{dict.admin.loginTitle}</h1>
       <p className="text-sm text-steel">{dict.admin.loginLead}</p>
       <label className="block text-sm">
         <span className="mb-2 block text-ink/70">{dict.admin.password}</span>
