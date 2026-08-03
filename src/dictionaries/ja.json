@@ -1,0 +1,71 @@
+{
+  "brand": "KODEN",
+  "tagline": "道具のある暮らしを、もっと正確に。",
+  "nav": {
+    "home": "ホーム",
+    "categories": "カテゴリー",
+    "visit": "来店予約",
+    "admin": "管理"
+  },
+  "home": {
+    "heroTitle": "KODEN",
+    "heroLead": "工具実店舗の紹介と商品展示。カテゴリーから選び、来店予約で現物を確認できます。",
+    "categoriesTitle": "商品カテゴリー",
+    "categoriesLead": "用途別に整理したカテゴリーから、店頭の商品を探せます。",
+    "visitTitle": "来店予約",
+    "visitLead": "商品を決めていなくても、店舗見学・相談のご予約ができます。",
+    "visitCta": "来店を予約する",
+    "viewCategory": "カテゴリーを見る",
+    "viewAllInCategory": "このカテゴリーの全商品を見る",
+    "emptyCategories": "公開中のカテゴリーはまだありません。",
+    "emptyFeatured": "このカテゴリーのホームおすすめ商品はまだありません。"
+  },
+  "categories": {
+    "title": "カテゴリー一覧",
+    "lead": "店舗で取り扱う商品カテゴリーです。",
+    "empty": "カテゴリーがありません。",
+    "productCount": "{count} 点"
+  },
+  "product": {
+    "brand": "ブランド",
+    "bookTitle": "この商品を来店予約",
+    "bookLead": "在庫確認と現物確認のため、来店日時をお知らせください。",
+    "email": "メールアドレス",
+    "phone": "電話番号",
+    "visitAt": "来店希望日時",
+    "note": "備考",
+    "submit": "予約を送る",
+    "success": "予約を受け付けました。店舗よりご連絡します。",
+    "back": "カテゴリーへ戻る",
+    "priceHidden": "店頭価格",
+    "keywords": "キーワード"
+  },
+  "visit": {
+    "title": "来店予約",
+    "lead": "商品未定でも、店舗へのご来店予約が可能です。",
+    "name": "お名前",
+    "email": "メールアドレス",
+    "phone": "電話番号",
+    "visitAt": "来店希望日時",
+    "note": "ご相談内容",
+    "submit": "予約を送る",
+    "success": "来店予約を受け付けました。"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+  "admin": {
+    "loginTitle": "KODEN 管理ログイン",
+    "loginLead": "管理パスワードを入力してください。",
+    "password": "パスワード",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "overview": "概要",
+    "categories": "カテゴリー",
+    "products": "商品",
+    "bookings": "商品予約",
+    "visits": "来店予約",
+    "wrongPassword": "パスワードが違います",
+    "language": "言語"
+  }
+}

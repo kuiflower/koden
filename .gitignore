@@ -33,6 +33,14 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# local uploads
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# 运行时预约数据（分类/商品种子仍入库）
+/data/bookings.json
+/data/visits.json
+
 # vercel
 .vercel
 

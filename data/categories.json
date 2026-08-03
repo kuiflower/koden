@@ -1,0 +1,36 @@
+[
+  {
+    "id": "cat-power-tools",
+    "slug": "power-tools",
+    "name": {
+      "ja": "電動工具",
+      "zh": "电动工具"
+    },
+    "description": {
+      "ja": "現場作業向けの電動工具と関連アクセサリー。",
+      "zh": "面向现场作业的电动工具及相关配件。"
+    },
+    "imageUrl": "/samples/cat-power.jpg",
+    "sortOrder": 1,
+    "published": true,
+    "createdAt": "2026-08-03T00:00:00.000Z",
+    "updatedAt": "2026-08-03T00:00:00.000Z"
+  },
+  {
+    "id": "cat-hand-tools",
+    "slug": "hand-tools",
+    "name": {
+      "ja": "ハンドツール",
+      "zh": "手动工具"
+    },
+    "description": {
+      "ja": "日常メンテからプロ用途まで揃えた手工具。",
+      "zh": "从日常维护到专业用途的手动工具。"
+    },
+    "imageUrl": "/samples/cat-hand.jpg",
+    "sortOrder": 2,
+    "published": true,
+    "createdAt": "2026-08-03T00:00:00.000Z",
+    "updatedAt": "2026-08-03T00:00:00.000Z"
+  }
+]

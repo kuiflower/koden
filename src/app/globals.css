@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 工业精工：炭黑 · 冷灰纸感 · 铜橙点缀 */
+  --ink: #121417;
+  --ink-soft: #2a2f36;
+  --paper: #f3f4f6;
+  --panel: #ffffff;
+  --steel: #6b7280;
+  --copper: #b45309;
+  --copper-deep: #92400e;
+  --line: rgba(18, 20, 23, 0.1);
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-steel: var(--steel);
+  --color-copper: var(--copper);
+  --color-copper-deep: var(--copper-deep);
+  --color-line: var(--line);
+  --font-sans: var(--font-body-jp), var(--font-body-sc);
+  --font-display: var(--font-brand);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(180, 83, 9, 0.07), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(18, 20, 23, 0.05), transparent 50%),
+    var(--paper);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body-jp), var(--font-body-sc), "Hiragino Sans", "Noto Sans SC", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--copper) 28%, white);
+}
+
+.font-brand {
+  font-family: var(--font-brand), "Helvetica Neue", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  color: #fff;
+  border: 1px solid color-mix(in oklab, var(--copper) 55%, transparent);
+  padding: 0.8rem 1.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.btn-primary:hover {
+  background: var(--ink-soft);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  padding: 0.8rem 1.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--copper);
+  color: var(--copper-deep);
+}
+
+.field {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 0.75rem 0.9rem;
+  font: inherit;
+  outline: none;
+}
+
+.field:focus {
+  border-color: color-mix(in oklab, var(--copper) 70%, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--copper) 18%, transparent);
+}
+
+.reveal {
+  animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.reveal-delay {
+  animation-delay: 120ms;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-delay {
+    animation: none;
+  }
 }

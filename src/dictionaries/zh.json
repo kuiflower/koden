@@ -1,0 +1,71 @@
+{
+  "brand": "KODEN",
+  "tagline": "把精准的工具，带到你的工作与生活。",
+  "nav": {
+    "home": "首页",
+    "categories": "商品分类",
+    "visit": "预约到店",
+    "admin": "后台"
+  },
+  "home": {
+    "heroTitle": "KODEN",
+    "heroLead": "工具实体店介绍与商品展示。按分类浏览，也可预约到店查看实物。",
+    "categoriesTitle": "商品分类",
+    "categoriesLead": "按用途整理的分类，方便快速找到店内商品。",
+    "visitTitle": "预约到店",
+    "visitLead": "还没选好商品也可以预约到店参观与咨询。",
+    "visitCta": "预约到店",
+    "viewCategory": "查看分类",
+    "viewAllInCategory": "查看该分类全部商品",
+    "emptyCategories": "暂无已发布的分类。",
+    "emptyFeatured": "该分类暂无首页推荐商品。"
+  },
+  "categories": {
+    "title": "全部分类",
+    "lead": "店内在售商品分类一览。",
+    "empty": "暂无分类。",
+    "productCount": "{count} 件"
+  },
+  "product": {
+    "brand": "品牌",
+    "bookTitle": "预订该商品到店购买",
+    "bookLead": "请填写联系方式与到店时间，方便我们确认库存与现货。",
+    "email": "联系邮箱",
+    "phone": "联系电话",
+    "visitAt": "到店预约时间",
+    "note": "备注",
+    "submit": "提交预订",
+    "success": "预订已提交，我们会尽快与您联系。",
+    "back": "返回分类",
+    "priceHidden": "到店询价",
+    "keywords": "关键词"
+  },
+  "visit": {
+    "title": "预约到店",
+    "lead": "与商品预订不同：这里是一般到店参观 / 咨询预约。",
+    "name": "姓名",
+    "email": "联系邮箱",
+    "phone": "联系电话",
+    "visitAt": "到店预约时间",
+    "note": "咨询内容",
+    "submit": "提交预约",
+    "success": "到店预约已提交。"
+  },
+  "footer": {
+    "rights": "保留所有权利。"
+  },
+  "admin": {
+    "loginTitle": "KODEN 后台登录",
+    "loginLead": "请输入管理密码。",
+    "password": "密码",
+    "login": "登录",
+    "logout": "退出",
+    "overview": "总览",
+    "categories": "分类管理",
+    "products": "商品管理",
+    "bookings": "商品预订",
+    "visits": "到店预约",
+    "wrongPassword": "密码错误",
+    "language": "语言"
+  }
+}
