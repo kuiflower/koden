@@ -15,6 +15,24 @@
 | **GitHub** | 代码的「正式存档」 | Commit 后务必 Push |
 | **Vercel** | 网站托管与上线 | 一般不用手动操作，跟 GitHub 自动同步 |
 
+## 线上地址
+
+- 网站：https://koden-nine.vercel.app
+- 日文：https://koden-nine.vercel.app/ja
+- 中文：https://koden-nine.vercel.app/zh
+- 后台：https://koden-nine.vercel.app/admin
+- GitHub：https://github.com/kuiflower/koden
+
+后台默认密码：`admin123`（线上已配置 `ADMIN_PASSWORD`，可在 Vercel 项目设置里修改）
+
+## 以后怎么更新网站
+
+1. 在本地改代码（Cursor / SourceTree 都行）
+2. 提交（Commit）
+3. 推送到 GitHub 的 `main` 分支（Push）
+4. 等 1–2 分钟，Vercel 自动重新部署
+5. 刷新线上网站即可看到更新
+
 ## 本地开发
 
 ```bash
@@ -31,14 +49,14 @@ npm run dev
 - 前台：`/ja` · `/zh` 双语路径，分类展示、商品详情、商品预订到店、一般到店预约
 - 后台：分类 / 商品 CRUD，商品预订列表，到店预约列表，中日界面切换
 - SEO：metadata、hreflang、sitemap、robots、商品 JSON-LD
-- 数据：本地 `data/*.json`；线上配置 `BLOB_READ_WRITE_TOKEN` 后走 Vercel Blob 持久化（免费额度内）
+- 数据：本地 `data/*.json`；线上走 Vercel Blob 持久化（免费额度内）
 
 ## 线上环境变量（Vercel）
 
 - `ADMIN_PASSWORD`：后台密码
-- `BLOB_READ_WRITE_TOKEN`：Vercel Blob（Storage 创建后自动注入）
-- `NEXT_PUBLIC_SITE_URL`：正式站点 URL（用于 sitemap / canonical）
+- `BLOB_READ_WRITE_TOKEN`：Vercel Blob（已自动注入）
+- `NEXT_PUBLIC_SITE_URL`：`https://koden-nine.vercel.app`
 
 ## 技術棧
 
-Next.js · React · TypeScript · Tailwind CSS · Sharp · Vercel Blob · Vercel（tokyo `hnd1`）
+Next.js · React · TypeScript · Tailwind CSS · Sharp · Vercel Blob · Vercel
