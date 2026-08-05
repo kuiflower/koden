@@ -3,11 +3,9 @@ import { AdminLoginForm } from "@/components/AdminLoginForm";
 import { AdminShell } from "@/components/AdminShell";
 import { listAnnouncements } from "@/lib/announcements";
 import { isAdminAuthenticated } from "@/lib/auth";
-import { listBookings } from "@/lib/bookings";
 import { listCategories } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
 import { listProducts } from "@/lib/products";
-import { listVisits } from "@/lib/visits";
 import { getAdminLocale } from "@/lib/admin-locale";
 
 export const dynamic = "force-dynamic";
@@ -24,33 +22,21 @@ export default async function AdminHomePage() {
     );
   }
 
-  const [announcements, categories, products, bookings, visits] = await Promise.all([
+  const [announcements, categories, products] = await Promise.all([
     listAnnouncements(),
     listCategories(),
     listProducts(),
-    listBookings(),
-    listVisits(),
   ]);
 
   const cards = [
     { label: dict.admin.announcements, value: announcements.length, href: "/admin/announcements" },
     { label: dict.admin.categories, value: categories.length, href: "/admin/categories" },
     { label: dict.admin.products, value: products.length, href: "/admin/products" },
-    { label: dict.admin.bookings, value: bookings.length, href: "/admin/bookings" },
-    { label: dict.admin.visits, value: visits.length, href: "/admin/visits" },
   ];
 
   return (
-    <AdminShell
-      title={dict.admin.overview}
-      dict={dict}
-      locale={locale}
-      badges={{
-        bookings: bookings.filter((item) => item.status === "new").length,
-        visits: visits.filter((item) => item.status === "new").length,
-      }}
-    >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <AdminShell title={dict.admin.overview} dict={dict} locale={locale}>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <Link
             key={card.href}

@@ -12,7 +12,7 @@ export default async function NewAnnouncementPage() {
 
   return (
     <AdminFrame title={dict.admin.newAnnouncement}>
-      <AnnouncementForm mode="create" />
+      <AnnouncementForm mode="create" dict={dict} />
     </AdminFrame>
   );
 }

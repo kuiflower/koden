@@ -103,6 +103,7 @@ export function parseProductInput(body: unknown): ProductInput | null {
       return legacy ? [legacy] : [];
     })(),
     detailImages: asStringArray(raw.detailImages),
+    purchaseUrl: asString(raw.purchaseUrl),
     featured: asBoolean(raw.featured, false),
     published: asBoolean(raw.published, true),
   };

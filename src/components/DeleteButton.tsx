@@ -5,17 +5,21 @@ import { useRouter } from "next/navigation";
 export function DeleteButton({
   endpoint,
   label = "删除",
+  confirmMessage = "确认删除？",
+  failedMessage = "删除失败",
 }: {
   endpoint: string;
   label?: string;
+  confirmMessage?: string;
+  failedMessage?: string;
 }) {
   const router = useRouter();
 
   async function onClick() {
-    if (!confirm("确认删除？")) return;
+    if (!confirm(confirmMessage)) return;
     const res = await fetch(endpoint, { method: "DELETE" });
     if (!res.ok) {
-      alert("删除失败");
+      alert(failedMessage);
       return;
     }
     router.refresh();

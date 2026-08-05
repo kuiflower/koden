@@ -18,7 +18,7 @@ export default async function sitemap() {
   const categories = await listCategories({ publishedOnly: true });
   const products = await listProducts({ publishedOnly: true });
 
-  const staticPaths = ["", "/categories", "/visit"];
+  const staticPaths = ["", "/categories"];
   const entries = [];
 
   for (const locale of locales) {

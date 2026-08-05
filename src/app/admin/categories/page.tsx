@@ -14,24 +14,25 @@ export default async function AdminCategoriesPage() {
   if (!(await isAdminAuthenticated())) redirect("/admin");
   const locale = await getAdminLocale();
   const dict = await getDictionary(locale);
+  const a = dict.admin;
   const items = await listCategories();
 
   return (
-    <AdminFrame title={dict.admin.categories}>
+    <AdminFrame title={a.categories}>
       <div className="mb-5 flex justify-end">
         <Link href="/admin/categories/new" className="btn-primary">
-          新建分类
+          {a.newCategory}
         </Link>
       </div>
       <div className="overflow-x-auto border border-line bg-panel">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-line bg-paper text-xs uppercase tracking-wide text-steel">
             <tr>
-              <th className="px-4 py-3">名称</th>
-              <th className="px-4 py-3">Slug</th>
-              <th className="px-4 py-3">排序</th>
-              <th className="px-4 py-3">状态</th>
-              <th className="px-4 py-3">操作</th>
+              <th className="px-4 py-3">{a.name}</th>
+              <th className="px-4 py-3">{a.slug}</th>
+              <th className="px-4 py-3">{a.sortOrder}</th>
+              <th className="px-4 py-3">{a.status}</th>
+              <th className="px-4 py-3">{a.actions}</th>
             </tr>
           </thead>
           <tbody>
@@ -45,13 +46,18 @@ export default async function AdminCategoriesPage() {
                 </td>
                 <td className="px-4 py-3">{item.slug}</td>
                 <td className="px-4 py-3">{item.sortOrder}</td>
-                <td className="px-4 py-3">{item.published ? "已发布" : "草稿"}</td>
+                <td className="px-4 py-3">{item.published ? a.published : a.draft}</td>
                 <td className="px-4 py-3">
                   <div className="flex gap-3">
                     <Link href={`/admin/categories/${item.id}`} className="text-xs text-copper-deep">
-                      编辑
+                      {a.edit}
                     </Link>
-                    <DeleteButton endpoint={`/api/categories/${item.id}`} />
+                    <DeleteButton
+                      endpoint={`/api/categories/${item.id}`}
+                      label={a.delete}
+                      confirmMessage={a.deleteConfirm}
+                      failedMessage={a.deleteFailed}
+                    />
                   </div>
                 </td>
               </tr>

@@ -28,7 +28,7 @@ export function SiteHeader({
   const links = [
     { href: `/${locale}`, label: dict.nav.home },
     { href: `/${locale}/categories`, label: dict.nav.categories },
-    { href: `/${locale}/visit`, label: dict.nav.visit },
+    { href: `/${locale}#contact`, label: dict.nav.contact },
   ];
 
   return (
@@ -36,17 +36,21 @@ export function SiteHeader({
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
         <BrandMark href={`/${locale}`} variant="header" tone="light" />
         <nav className="hidden items-center gap-6 text-sm text-ink/70 md:flex">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`transition hover:text-ink ${
-                pathname === link.href ? "text-ink" : ""
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const active =
+              link.href === `/${locale}`
+                ? pathname === `/${locale}`
+                : !link.href.includes("#") && pathname.startsWith(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`transition hover:text-ink ${active ? "text-ink" : ""}`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
         <div className="flex items-center gap-2 text-xs">
           {locales.map((loc) => (

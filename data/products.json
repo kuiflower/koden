@@ -7,7 +7,12 @@
     "summary": "現場作業向けの18Vコードレスドリル。軽量ボディで連続作業にも対応。",
     "description": "店舗展示用のサンプル商品です。\n\n・18V リチウムイオンバッテリー対応\n・キーレスチャック採用でビット交換がスムーズ\n・LEDライト搭載で暗所作業をサポート\n\n来店予約で現物の重量感・グリップ感をご確認いただけます。",
     "brand": "KODEN",
-    "keywords": ["ドリル", "電動工具", "cordless drill", "电钻"],
+    "keywords": [
+      "ドリル",
+      "電動工具",
+      "cordless drill",
+      "电钻"
+    ],
     "price": 12800,
     "currency": "JPY",
     "showPrice": true,
@@ -23,7 +28,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2026-08-03T00:00:00.000Z",
-    "updatedAt": "2026-08-03T15:00:00.000Z"
+    "updatedAt": "2026-08-03T15:00:00.000Z",
+    "purchaseUrl": "https://www.amazon.co.jp/s?k=demo-cordless-drill"
   },
   {
     "id": "prod-demo-impact",
@@ -33,7 +39,11 @@
     "summary": "締め付け作業に強いインパクトドライバー。コンパクトで取り回し良好。",
     "description": "ホームおすすめ表示用の電動工具サンプルです。\n\n・高トルク設計でネジ締めがスピーディ\n・コンパクトヘッドで狭い場所にも入りやすい\n・可変スピードトリガーで繊細な作業にも対応\n\n店頭で試打感をご体験ください。",
     "brand": "KODEN",
-    "keywords": ["インパクト", "電動工具", "ドライバー"],
+    "keywords": [
+      "インパクト",
+      "電動工具",
+      "ドライバー"
+    ],
     "price": 15800,
     "currency": "JPY",
     "showPrice": true,
@@ -49,7 +59,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2026-08-03T00:00:00.000Z",
-    "updatedAt": "2026-08-03T15:00:00.000Z"
+    "updatedAt": "2026-08-03T15:00:00.000Z",
+    "purchaseUrl": "https://www.amazon.co.jp/s?k=demo-impact-driver"
   },
   {
     "id": "prod-demo-hammer",
@@ -59,7 +70,11 @@
     "summary": "日常メンテから現場作業まで使えるスタンダードハンマー。",
     "description": "ハンドツールのサンプル商品です。\n\n・バランスの取れたヘッド重量\n・滑りにくいグリップ\n・釘抜き機能付きクロー\n\n来店予約で現物をご確認いただけます。価格は店頭にてご案内します。",
     "brand": "KODEN",
-    "keywords": ["ハンマー", "手工具", "hammer"],
+    "keywords": [
+      "ハンマー",
+      "手工具",
+      "hammer"
+    ],
     "price": null,
     "currency": "JPY",
     "showPrice": false,
@@ -75,7 +90,8 @@
     "featured": true,
     "published": true,
     "createdAt": "2026-08-03T00:00:00.000Z",
-    "updatedAt": "2026-08-03T15:00:00.000Z"
+    "updatedAt": "2026-08-03T15:00:00.000Z",
+    "purchaseUrl": "https://www.amazon.co.jp/s?k=demo-hammer"
   },
   {
     "id": "prod-demo-wrench",
@@ -85,7 +101,11 @@
     "summary": "整備・メンテナンス向けコンビネーションレンチセット。",
     "description": "手工具カテゴリーの追加サンプルです。\n\n・複数サイズをセットで収納\n・両口仕様で作業効率アップ\n・耐摩耗性の高い仕上げ\n\n店頭でサイズ展開とケース収納をご覧いただけます。",
     "brand": "KODEN",
-    "keywords": ["レンチ", "手工具", "wrench"],
+    "keywords": [
+      "レンチ",
+      "手工具",
+      "wrench"
+    ],
     "price": 4800,
     "currency": "JPY",
     "showPrice": true,
@@ -101,6 +121,7 @@
     "featured": true,
     "published": true,
     "createdAt": "2026-08-03T00:00:00.000Z",
-    "updatedAt": "2026-08-03T15:00:00.000Z"
+    "updatedAt": "2026-08-03T15:00:00.000Z",
+    "purchaseUrl": "https://www.amazon.co.jp/s?k=demo-wrench"
   }
 ]

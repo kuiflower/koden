@@ -27,6 +27,7 @@ function normalizeProduct(raw: Product & { imageUrl?: string }): Product {
     coverImages: coverImages.length ? coverImages : fromLegacy,
     featured: Boolean(raw.featured),
     detailImages: Array.isArray(raw.detailImages) ? raw.detailImages : [],
+    purchaseUrl: typeof raw.purchaseUrl === "string" ? raw.purchaseUrl : "",
   };
 }
 

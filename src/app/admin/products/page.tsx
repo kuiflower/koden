@@ -17,6 +17,7 @@ export default async function AdminProductsPage() {
   if (!(await isAdminAuthenticated())) redirect("/admin");
   const locale = await getAdminLocale();
   const dict = await getDictionary(locale);
+  const a = dict.admin;
   const [products, categories] = await Promise.all([
     listProducts(),
     listCategories(),
@@ -24,22 +25,22 @@ export default async function AdminProductsPage() {
   const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c]));
 
   return (
-    <AdminFrame title={dict.admin.products}>
+    <AdminFrame title={a.products}>
       <div className="mb-5 flex justify-end">
         <Link href="/admin/products/new" className="btn-primary">
-          新建商品
+          {a.newProduct}
         </Link>
       </div>
       <div className="overflow-x-auto border border-line bg-panel">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-line bg-paper text-xs uppercase tracking-wide text-steel">
             <tr>
-              <th className="px-4 py-3">商品</th>
-              <th className="px-4 py-3">分类</th>
-              <th className="px-4 py-3">品牌</th>
-              <th className="px-4 py-3">首页推荐</th>
-              <th className="px-4 py-3">状态</th>
-              <th className="px-4 py-3">操作</th>
+              <th className="px-4 py-3">{a.product}</th>
+              <th className="px-4 py-3">{a.category}</th>
+              <th className="px-4 py-3">{a.brand}</th>
+              <th className="px-4 py-3">{a.featured}</th>
+              <th className="px-4 py-3">{a.status}</th>
+              <th className="px-4 py-3">{a.actions}</th>
             </tr>
           </thead>
           <tbody>
@@ -59,7 +60,6 @@ export default async function AdminProductsPage() {
                     </div>
                     <div>
                       <div className="font-medium">{item.name}</div>
-                      <div className="text-xs text-steel">{item.slug}</div>
                     </div>
                   </div>
                 </td>
@@ -70,15 +70,25 @@ export default async function AdminProductsPage() {
                 </td>
                 <td className="px-4 py-3">{item.brand || "—"}</td>
                 <td className="px-4 py-3">
-                  <FeaturedToggle productId={item.id} featured={item.featured} />
+                  <FeaturedToggle
+                    productId={item.id}
+                    featured={item.featured}
+                    label={a.featured}
+                    failedMessage={a.updateFailed}
+                  />
                 </td>
-                <td className="px-4 py-3">{item.published ? "已发布" : "草稿"}</td>
+                <td className="px-4 py-3">{item.published ? a.published : a.draft}</td>
                 <td className="px-4 py-3">
                   <div className="flex gap-3">
                     <Link href={`/admin/products/${item.id}`} className="text-xs text-copper-deep">
-                      编辑
+                      {a.edit}
                     </Link>
-                    <DeleteButton endpoint={`/api/products/${item.id}`} />
+                    <DeleteButton
+                      endpoint={`/api/products/${item.id}`}
+                      label={a.delete}
+                      confirmMessage={a.deleteConfirm}
+                      failedMessage={a.deleteFailed}
+                    />
                   </div>
                 </td>
               </tr>

@@ -18,7 +18,7 @@ export default async function EditAnnouncementPage({ params }: Props) {
 
   return (
     <AdminFrame title={dict.admin.editAnnouncement}>
-      <AnnouncementForm mode="edit" initial={item} />
+      <AnnouncementForm mode="edit" initial={item} dict={dict} />
     </AdminFrame>
   );
 }

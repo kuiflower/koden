@@ -1,8 +1,6 @@
 import { AdminShell } from "@/components/AdminShell";
 import { getAdminLocale } from "@/lib/admin-locale";
-import { listBookings } from "@/lib/bookings";
 import { getDictionary } from "@/lib/dictionaries";
-import { listVisits } from "@/lib/visits";
 
 export async function AdminFrame({
   title,
@@ -13,14 +11,9 @@ export async function AdminFrame({
 }) {
   const locale = await getAdminLocale();
   const dict = await getDictionary(locale);
-  const [bookings, visits] = await Promise.all([listBookings(), listVisits()]);
-  const badges = {
-    bookings: bookings.filter((item) => item.status === "new").length,
-    visits: visits.filter((item) => item.status === "new").length,
-  };
 
   return (
-    <AdminShell title={title} dict={dict} locale={locale} badges={badges}>
+    <AdminShell title={title} dict={dict} locale={locale}>
       {children}
     </AdminShell>
   );

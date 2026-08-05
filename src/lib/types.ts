@@ -42,6 +42,8 @@ export type Product = {
   /** 封面图（支持多张；第一张用于列表缩略图） */
   coverImages: string[];
   detailImages: string[];
+  /** 外部购买页链接 */
+  purchaseUrl: string;
   /** 首页推荐（按分类栏目展示） */
   featured: boolean;
   published: boolean;
@@ -62,51 +64,9 @@ export type ProductInput = {
   showPrice: boolean;
   coverImages: string[];
   detailImages: string[];
+  purchaseUrl: string;
   featured: boolean;
   published: boolean;
-};
-
-export type BookingStatus = "new" | "confirmed" | "done" | "cancelled";
-
-/** 商品预订到店 */
-export type ProductBooking = {
-  id: string;
-  productId: string;
-  productName: string;
-  email: string;
-  phone: string;
-  visitAt: string;
-  note: string;
-  status: BookingStatus;
-  createdAt: string;
-};
-
-export type ProductBookingInput = {
-  productId: string;
-  email: string;
-  phone: string;
-  visitAt: string;
-  note?: string;
-};
-
-/** 联系我们 · 预约到店（与商品预订不同） */
-export type StoreVisit = {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  visitAt: string;
-  note: string;
-  status: BookingStatus;
-  createdAt: string;
-};
-
-export type StoreVisitInput = {
-  name: string;
-  email: string;
-  phone: string;
-  visitAt: string;
-  note?: string;
 };
 
 /** 首页活动通知 / お知らせ */

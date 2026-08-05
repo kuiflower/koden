@@ -3,22 +3,26 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUpload } from "@/components/ImageUpload";
+import type { Dictionary } from "@/lib/dictionaries";
+import { makeSlug } from "@/lib/slug";
 import type { Category, Product } from "@/lib/types";
 
 export function ProductForm({
   initial,
   categories,
   mode,
+  dict,
 }: {
   initial?: Product;
   categories: Category[];
   mode: "create" | "edit";
+  dict: Dictionary;
 }) {
   const router = useRouter();
+  const a = dict.admin;
   const [categoryId, setCategoryId] = useState(
     initial?.categoryId || categories[0]?.id || "",
   );
-  const [slug, setSlug] = useState(initial?.slug || "");
   const [name, setName] = useState(initial?.name || "");
   const [summary, setSummary] = useState(initial?.summary || "");
   const [description, setDescription] = useState(initial?.description || "");
@@ -39,6 +43,7 @@ export function ProductForm({
   );
   const [featured, setFeatured] = useState(initial?.featured ?? false);
   const [published, setPublished] = useState(initial?.published ?? true);
+  const [purchaseUrl, setPurchaseUrl] = useState(initial?.purchaseUrl || "");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +51,8 @@ export function ProductForm({
     event.preventDefault();
     setLoading(true);
     setError("");
+    const slug =
+      initial?.slug || makeSlug(name, "product") || `product-${Date.now().toString(36)}`;
     const payload = {
       categoryId,
       slug,
@@ -59,6 +66,7 @@ export function ProductForm({
       showPrice,
       coverImages,
       detailImages,
+      purchaseUrl,
       featured,
       published,
     };
@@ -73,7 +81,7 @@ export function ProductForm({
     setLoading(false);
     if (!res.ok) {
       const data = (await res.json().catch(() => null)) as { error?: string } | null;
-      setError(data?.error || "保存失败");
+      setError(data?.error || a.saveFailed);
       return;
     }
     router.push("/admin/products");
@@ -83,7 +91,7 @@ export function ProductForm({
   return (
     <form onSubmit={onSubmit} className="max-w-3xl space-y-4 border border-line bg-panel p-5 md:p-6">
       <label className="block text-sm">
-        <span className="mb-1.5 block">分类</span>
+        <span className="mb-1.5 block">{a.category}</span>
         <select
           className="field"
           required
@@ -98,21 +106,17 @@ export function ProductForm({
         </select>
       </label>
       <label className="block text-sm">
-        <span className="mb-1.5 block">Slug</span>
-        <input className="field" required value={slug} onChange={(e) => setSlug(e.target.value)} />
-      </label>
-      <label className="block text-sm">
-        <span className="mb-1.5 block">商品名称</span>
+        <span className="mb-1.5 block">{a.productName}</span>
         <input
           className="field"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="填什么前台就显示什么"
+          placeholder={a.productNamePlaceholder}
         />
       </label>
       <label className="block text-sm">
-        <span className="mb-1.5 block">摘要</span>
+        <span className="mb-1.5 block">{a.summary}</span>
         <textarea
           className="field min-h-20"
           value={summary}
@@ -120,7 +124,7 @@ export function ProductForm({
         />
       </label>
       <label className="block text-sm">
-        <span className="mb-1.5 block">详情介绍</span>
+        <span className="mb-1.5 block">{a.description}</span>
         <textarea
           className="field min-h-32"
           value={description}
@@ -129,21 +133,26 @@ export function ProductForm({
       </label>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block text-sm">
-          <span className="mb-1.5 block">品牌</span>
+          <span className="mb-1.5 block">{a.brand}</span>
           <input className="field" value={brand} onChange={(e) => setBrand(e.target.value)} />
         </label>
         <label className="block text-sm">
-          <span className="mb-1.5 block">SEO 关键词（逗号分隔）</span>
+          <span className="mb-1.5 block">{a.keywords}</span>
           <input className="field" value={keywords} onChange={(e) => setKeywords(e.target.value)} />
         </label>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
         <label className="block text-sm">
-          <span className="mb-1.5 block">价格</span>
-          <input className="field" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="可空" />
+          <span className="mb-1.5 block">{a.price}</span>
+          <input
+            className="field"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder={a.pricePlaceholder}
+          />
         </label>
         <label className="block text-sm">
-          <span className="mb-1.5 block">货币</span>
+          <span className="mb-1.5 block">{a.currency}</span>
           <select
             className="field"
             value={currency}
@@ -159,31 +168,56 @@ export function ProductForm({
             checked={showPrice}
             onChange={(e) => setShowPrice(e.target.checked)}
           />
-          前台显示价格
+          {a.showPrice}
         </label>
       </div>
+      <label className="block text-sm">
+        <span className="mb-1.5 block">{a.purchaseUrl}</span>
+        <input
+          className="field"
+          type="url"
+          value={purchaseUrl}
+          onChange={(e) => setPurchaseUrl(e.target.value)}
+          placeholder="https://..."
+        />
+        <span className="mt-1 block text-xs text-steel">{a.purchaseUrlHint}</span>
+      </label>
       <ImageUpload
-        label="封面图（可多选，第一张作为列表缩略图）"
+        label={a.coverImages}
         multiple
         value={coverImages}
         onChange={(next) =>
           setCoverImages(Array.isArray(next) ? next : next ? [next] : [])
         }
+        labels={{
+          upload: a.uploadLocal,
+          uploading: a.uploading,
+          remove: a.uploadRemove,
+          empty: a.uploadEmpty,
+          failed: a.uploadFailed,
+        }}
       />
       <ImageUpload
-        label="详情图（可多选；保存后显示在商品页下方）"
+        label={a.detailImages}
         multiple
         value={detailImages}
         onChange={(next) => setDetailImages(Array.isArray(next) ? next : next ? [next] : [])}
+        labels={{
+          upload: a.uploadLocal,
+          uploading: a.uploading,
+          remove: a.uploadRemove,
+          empty: a.uploadEmpty,
+          failed: a.uploadFailed,
+        }}
       />
-      <p className="text-xs text-steel">上传图片后，请点击底部「保存商品」才会生效。</p>
+      <p className="text-xs text-steel">{a.uploadHint}</p>
       <label className="flex items-center gap-2 text-sm">
         <input
           type="checkbox"
           checked={featured}
           onChange={(e) => setFeatured(e.target.checked)}
         />
-        首页推荐
+        {a.featured}
       </label>
       <label className="flex items-center gap-2 text-sm">
         <input
@@ -191,11 +225,11 @@ export function ProductForm({
           checked={published}
           onChange={(e) => setPublished(e.target.checked)}
         />
-        发布
+        {a.publish}
       </label>
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
       <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60">
-        {loading ? "..." : mode === "create" ? "创建商品" : "保存商品"}
+        {loading ? "..." : mode === "create" ? a.createProduct : a.saveProduct}
       </button>
     </form>
   );

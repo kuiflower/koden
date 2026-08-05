@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ProductBookingForm } from "@/components/ProductBookingForm";
 import { ProductGallery } from "@/components/ProductGallery";
 import { getCategoryById } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
@@ -98,6 +97,18 @@ export default async function ProductDetailPage({
           <div className="prose-none mt-6 whitespace-pre-wrap text-sm leading-7 text-ink-soft">
             {description}
           </div>
+          {product.purchaseUrl ? (
+            <a
+              href={product.purchaseUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-8 inline-flex w-full justify-center md:min-w-[18rem] md:px-12"
+            >
+              {dict.product.buyCta}
+            </a>
+          ) : (
+            <p className="mt-8 text-sm text-steel">{dict.product.buyUnavailable}</p>
+          )}
           {product.keywords.length > 0 ? (
             <p className="mt-6 text-xs text-steel">
               {dict.product.keywords}: {product.keywords.join(" · ")}
@@ -124,12 +135,6 @@ export default async function ProductDetailPage({
           </div>
         </section>
       ) : null}
-
-      <section className="mt-14 border-t border-line pt-10">
-        <div className="mx-auto max-w-2xl">
-          <ProductBookingForm productId={product.id} dict={dict} />
-        </div>
-      </section>
     </main>
   );
 }

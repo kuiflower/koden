@@ -12,16 +12,11 @@ export function AdminShell({
   title,
   dict,
   locale,
-  badges,
 }: {
   children: React.ReactNode;
   title: string;
   dict: Dictionary;
   locale: Locale;
-  badges?: {
-    bookings?: number;
-    visits?: number;
-  };
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -31,16 +26,6 @@ export function AdminShell({
     { href: "/admin/announcements", label: dict.admin.announcements },
     { href: "/admin/categories", label: dict.admin.categories },
     { href: "/admin/products", label: dict.admin.products },
-    {
-      href: "/admin/bookings",
-      label: dict.admin.bookings,
-      badge: badges?.bookings ?? 0,
-    },
-    {
-      href: "/admin/visits",
-      label: dict.admin.visits,
-      badge: badges?.visits ?? 0,
-    },
   ];
 
   async function logout() {
@@ -88,27 +73,20 @@ export function AdminShell({
         </div>
         <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 pb-3 pt-3 md:px-8">
           {nav.map((item) => {
-            const active =
-              "exact" in item && item.exact
-                ? pathname === item.href
-                : pathname.startsWith(item.href);
-            const badge = "badge" in item ? item.badge : 0;
+            const active = item.exact
+              ? pathname === item.href
+              : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap px-3.5 py-1.5 text-sm transition ${
+                className={`inline-flex items-center whitespace-nowrap px-3.5 py-1.5 text-sm transition ${
                   active
                     ? "nav-chip-active"
                     : "text-ink/60 hover:bg-panel hover:text-ink"
                 }`}
               >
                 {item.label}
-                {badge && badge > 0 ? (
-                  <span className="inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white">
-                    {badge > 99 ? "99+" : badge}
-                  </span>
-                ) : null}
               </Link>
             );
           })}

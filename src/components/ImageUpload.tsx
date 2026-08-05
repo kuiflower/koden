@@ -2,28 +2,47 @@
 
 import { useRef, useState } from "react";
 
-async function uploadFile(file: File) {
+async function uploadFile(file: File, failedMessage: string) {
   const body = new FormData();
   body.append("file", file);
   const res = await fetch("/api/upload", { method: "POST", body });
   if (!res.ok) {
     const data = (await res.json().catch(() => null)) as { error?: string } | null;
-    throw new Error(data?.error || "图片上传失败");
+    throw new Error(data?.error || failedMessage);
   }
   return (await res.json()) as { url: string };
 }
+
+type UploadLabels = {
+  upload: string;
+  uploading: string;
+  remove: string;
+  empty: string;
+  failed: string;
+};
+
+const defaultLabels: UploadLabels = {
+  upload: "本地上传",
+  uploading: "上传中...",
+  remove: "删",
+  empty: "尚未上传图片",
+  failed: "图片上传失败",
+};
 
 export function ImageUpload({
   label,
   value,
   onChange,
   multiple = false,
+  labels,
 }: {
   label: string;
   value: string | string[];
   onChange: (next: string | string[]) => void;
   multiple?: boolean;
+  labels?: Partial<UploadLabels>;
 }) {
+  const t = { ...defaultLabels, ...labels };
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -36,7 +55,7 @@ export function ImageUpload({
     try {
       const uploaded: string[] = [];
       for (const file of Array.from(files)) {
-        const result = await uploadFile(file);
+        const result = await uploadFile(file, t.failed);
         uploaded.push(result.url);
       }
       if (multiple) {
@@ -45,7 +64,7 @@ export function ImageUpload({
         onChange(uploaded[0] || "");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "上传失败");
+      setError(err instanceof Error ? err.message : t.failed);
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -70,7 +89,7 @@ export function ImageUpload({
           disabled={uploading}
           onClick={() => inputRef.current?.click()}
         >
-          {uploading ? "上传中..." : "本地上传"}
+          {uploading ? t.uploading : t.upload}
         </button>
         <input
           ref={inputRef}
@@ -93,13 +112,13 @@ export function ImageUpload({
                 className="absolute right-1 top-1 bg-ink/80 px-1.5 py-0.5 text-[10px] text-white"
                 onClick={() => removeAt(index)}
               >
-                删
+                {t.remove}
               </button>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-xs text-steel">尚未上传图片</p>
+        <p className="text-xs text-steel">{t.empty}</p>
       )}
     </div>
   );

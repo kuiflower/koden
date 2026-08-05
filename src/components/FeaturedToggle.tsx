@@ -6,9 +6,13 @@ import { useState } from "react";
 export function FeaturedToggle({
   productId,
   featured,
+  label = "首页推荐",
+  failedMessage = "更新失败",
 }: {
   productId: string;
   featured: boolean;
+  label?: string;
+  failedMessage?: string;
 }) {
   const router = useRouter();
   const [value, setValue] = useState(featured);
@@ -25,7 +29,7 @@ export function FeaturedToggle({
     setLoading(false);
     if (!res.ok) {
       setValue(!next);
-      alert("更新失败");
+      alert(failedMessage);
       return;
     }
     router.refresh();
@@ -39,7 +43,7 @@ export function FeaturedToggle({
         disabled={loading}
         onChange={(e) => void onChange(e.target.checked)}
       />
-      首页推荐
+      {label}
     </label>
   );
 }

@@ -2,24 +2,27 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { Dictionary } from "@/lib/dictionaries";
 import type { Announcement, AnnouncementIcon } from "@/lib/types";
-
-const ICONS: { value: AnnouncementIcon; label: string }[] = [
-  { value: "notice", label: "通知" },
-  { value: "info", label: "说明" },
-  { value: "gift", label: "活动 / 优惠" },
-  { value: "doc", label: "单据 / 制度" },
-  { value: "calendar", label: "日程 / 休業" },
-];
 
 export function AnnouncementForm({
   initial,
   mode,
+  dict,
 }: {
   initial?: Announcement;
   mode: "create" | "edit";
+  dict: Dictionary;
 }) {
   const router = useRouter();
+  const a = dict.admin;
+  const icons: { value: AnnouncementIcon; label: string }[] = [
+    { value: "notice", label: a.iconNotice },
+    { value: "info", label: a.iconInfo },
+    { value: "gift", label: a.iconGift },
+    { value: "doc", label: a.iconDoc },
+    { value: "calendar", label: a.iconCalendar },
+  ];
   const [title, setTitle] = useState(initial?.title || "");
   const [body, setBody] = useState(initial?.body || "");
   const [icon, setIcon] = useState<AnnouncementIcon>(initial?.icon || "notice");
@@ -52,7 +55,7 @@ export function AnnouncementForm({
     setLoading(false);
     if (!res.ok) {
       const data = (await res.json().catch(() => null)) as { error?: string } | null;
-      setError(data?.error || "保存失败");
+      setError(data?.error || a.saveFailed);
       return;
     }
     router.push("/admin/announcements");
@@ -65,7 +68,7 @@ export function AnnouncementForm({
       className="max-w-2xl space-y-4 border border-line bg-panel p-5 md:p-6"
     >
       <label className="block text-sm">
-        <span className="mb-1.5 block">标题</span>
+        <span className="mb-1.5 block">{a.title}</span>
         <input
           className="field"
           required
@@ -74,7 +77,7 @@ export function AnnouncementForm({
         />
       </label>
       <label className="block text-sm">
-        <span className="mb-1.5 block">正文</span>
+        <span className="mb-1.5 block">{a.body}</span>
         <textarea
           className="field min-h-36"
           value={body}
@@ -82,13 +85,13 @@ export function AnnouncementForm({
         />
       </label>
       <label className="block text-sm">
-        <span className="mb-1.5 block">图标</span>
+        <span className="mb-1.5 block">{a.icon}</span>
         <select
           className="field"
           value={icon}
           onChange={(e) => setIcon(e.target.value as AnnouncementIcon)}
         >
-          {ICONS.map((item) => (
+          {icons.map((item) => (
             <option key={item.value} value={item.value}>
               {item.label}
             </option>
@@ -96,7 +99,7 @@ export function AnnouncementForm({
         </select>
       </label>
       <label className="block text-sm">
-        <span className="mb-1.5 block">排序</span>
+        <span className="mb-1.5 block">{a.sortOrder}</span>
         <input
           className="field"
           value={sortOrder}
@@ -109,11 +112,11 @@ export function AnnouncementForm({
           checked={published}
           onChange={(e) => setPublished(e.target.checked)}
         />
-        发布到首页
+        {a.publishHome}
       </label>
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
       <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60">
-        {loading ? "..." : mode === "create" ? "创建" : "保存"}
+        {loading ? "..." : mode === "create" ? a.create : a.save}
       </button>
     </form>
   );

@@ -10,6 +10,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { isLocale, pickLocalized } from "@/lib/i18n";
 import { listProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo";
+import { storeContact } from "@/lib/store-contact";
 
 export const dynamic = "force-dynamic";
 
@@ -58,8 +59,8 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
               <Link href={`/${lang}/categories`} className="btn-primary-on-dark">
                 {dict.nav.categories}
               </Link>
-              <Link href={`/${lang}/visit`} className="btn-ghost-on-dark">
-                {dict.home.visitCta}
+              <Link href={`/${lang}#contact`} className="btn-ghost-on-dark">
+                {dict.nav.contact}
               </Link>
             </div>
           </div>
@@ -190,20 +191,78 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
         </div>
       </section>
 
-      <section className="border-t border-line bg-panel">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 md:flex-row md:items-center md:justify-between md:gap-8 md:px-8 md:py-12">
-          <div className="min-w-0 flex-1">
-            <h2 className="text-xl font-semibold text-ink md:text-2xl">
-              {dict.home.visitTitle}
+      <section id="contact" className="scroll-mt-24 border-t border-line bg-panel">
+        <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
+          <div className="mb-8 md:mb-10">
+            <h2 className="text-2xl font-semibold text-ink md:text-3xl">
+              {dict.home.contactTitle}
             </h2>
-            <p className="mt-2 text-sm text-steel">{dict.home.visitLead}</p>
+            <p className="mt-2 text-sm text-steel">{dict.home.contactLead}</p>
           </div>
-          <Link
-            href={`/${lang}/visit`}
-            className="btn-primary w-full shrink-0 md:w-auto md:min-w-[14rem]"
-          >
-            {dict.home.visitCta}
-          </Link>
+
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+            <div className="space-y-5 text-sm">
+              <div>
+                <p className="text-xs tracking-[0.18em] text-steel">
+                  {dict.home.contactAddress}
+                </p>
+                <p className="mt-1.5 text-base leading-7 text-ink">
+                  {storeContact.postal}
+                  <br />
+                  {storeContact.address[lang]}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs tracking-[0.18em] text-steel">
+                  {dict.home.contactPhone}
+                </p>
+                <a
+                  href={storeContact.phoneHref}
+                  className="mt-1.5 inline-block text-base text-ink hover:text-copper-deep"
+                >
+                  {storeContact.phone}
+                </a>
+              </div>
+              <div>
+                <p className="text-xs tracking-[0.18em] text-steel">
+                  {dict.home.contactEmail}
+                </p>
+                <a
+                  href={`mailto:${storeContact.email}`}
+                  className="mt-1.5 inline-block text-base text-ink hover:text-copper-deep"
+                >
+                  {storeContact.email}
+                </a>
+              </div>
+              <div>
+                <p className="text-xs tracking-[0.18em] text-steel">
+                  {dict.home.contactHours}
+                </p>
+                <p className="mt-1.5 text-base text-ink">
+                  {storeContact.hours[lang]}
+                </p>
+              </div>
+              <a
+                href={storeContact.mapLinkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary inline-flex"
+              >
+                {dict.home.contactMap}
+              </a>
+            </div>
+
+            <div className="overflow-hidden border border-line bg-paper">
+              <iframe
+                title={storeContact.name[lang]}
+                src={storeContact.mapEmbedUrl}
+                className="h-[280px] w-full border-0 md:h-[360px]"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          </div>
         </div>
       </section>
     </main>
