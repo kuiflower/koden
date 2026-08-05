@@ -14,6 +14,7 @@ export async function POST(request: Request) {
 
   const formData = await request.formData();
   const file = formData.get("file");
+  const purpose = String(formData.get("purpose") || "");
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "请选择图片" }, { status: 400 });
   }
@@ -24,13 +25,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "原图不可超过 8MB" }, { status: 400 });
   }
 
+  const maxEdge = purpose === "banner" ? 2400 : 1600;
   const input = Buffer.from(await file.arrayBuffer());
   let output: Buffer;
   try {
     output = await sharp(input, { animated: false })
       .rotate()
-      .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
-      .jpeg({ quality: 86, mozjpeg: true })
+      .resize(maxEdge, maxEdge, { fit: "inside", withoutEnlargement: true })
+      .jpeg({ quality: purpose === "banner" ? 88 : 86, mozjpeg: true })
       .toBuffer();
   } catch {
     return NextResponse.json({ error: "图片处理失败" }, { status: 400 });

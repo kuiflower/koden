@@ -23,6 +23,7 @@ export function AdminShell({
 
   const nav = [
     { href: "/admin", label: dict.admin.overview, exact: true },
+    { href: "/admin/banner", label: dict.admin.banner },
     { href: "/admin/announcements", label: dict.admin.announcements },
     { href: "/admin/categories", label: dict.admin.categories },
     { href: "/admin/products", label: dict.admin.products },

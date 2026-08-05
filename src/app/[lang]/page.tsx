@@ -10,6 +10,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { isLocale, pickLocalized } from "@/lib/i18n";
 import { listProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo";
+import { getSiteSettings } from "@/lib/site-settings";
 import { storeContact } from "@/lib/store-contact";
 
 export const dynamic = "force-dynamic";
@@ -20,10 +21,11 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const dict = await getDictionary(lang);
+  const settings = await getSiteSettings();
   return buildPageMetadata({
     locale: lang,
     title: dict.brand,
-    description: dict.home.heroLead,
+    description: pickLocalized(settings.hero.lead, lang) || dict.home.heroLead,
     path: "/",
     keywords: ["KODEN", "工具", "工具店", "ハンドツール", "電動工具"],
   });
@@ -33,18 +35,21 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const dict = await getDictionary(lang);
-  const [announcements, categories, products] = await Promise.all([
+  const [announcements, categories, products, settings] = await Promise.all([
     listAnnouncements({ publishedOnly: true }),
     listCategories({ publishedOnly: true }),
     listProducts({ publishedOnly: true }),
+    getSiteSettings(),
   ]);
+  const heroLead = pickLocalized(settings.hero.lead, lang) || dict.home.heroLead;
+  const heroImage = settings.hero.imageUrl || "/samples/hero.jpg";
 
   return (
     <main>
       <section className="relative isolate min-h-[42vh] overflow-hidden border-b border-line md:min-h-[72vh]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/samples/hero.jpg"
+          src={heroImage}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -53,7 +58,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
           <div className="reveal max-w-xl text-white">
             <BrandMark href={null} variant="hero" tone="dark" />
             <p className="mt-4 text-sm leading-6 text-white/90 md:mt-6 md:text-lg md:leading-7">
-              {dict.home.heroLead}
+              {heroLead}
             </p>
             <div className="mt-5 flex flex-wrap gap-2.5 md:mt-8 md:gap-3">
               <Link href={`/${lang}/categories`} className="btn-primary-on-dark">

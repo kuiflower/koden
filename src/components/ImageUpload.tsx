@@ -2,9 +2,10 @@
 
 import { useRef, useState } from "react";
 
-async function uploadFile(file: File, failedMessage: string) {
+async function uploadFile(file: File, failedMessage: string, purpose?: string) {
   const body = new FormData();
   body.append("file", file);
+  if (purpose) body.append("purpose", purpose);
   const res = await fetch("/api/upload", { method: "POST", body });
   if (!res.ok) {
     const data = (await res.json().catch(() => null)) as { error?: string } | null;
@@ -35,12 +36,14 @@ export function ImageUpload({
   onChange,
   multiple = false,
   labels,
+  purpose,
 }: {
   label: string;
   value: string | string[];
   onChange: (next: string | string[]) => void;
   multiple?: boolean;
   labels?: Partial<UploadLabels>;
+  purpose?: string;
 }) {
   const t = { ...defaultLabels, ...labels };
   const inputRef = useRef<HTMLInputElement>(null);
@@ -55,7 +58,7 @@ export function ImageUpload({
     try {
       const uploaded: string[] = [];
       for (const file of Array.from(files)) {
-        const result = await uploadFile(file, t.failed);
+        const result = await uploadFile(file, t.failed, purpose);
         uploaded.push(result.url);
       }
       if (multiple) {

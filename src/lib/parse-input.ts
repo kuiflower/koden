@@ -4,6 +4,7 @@ import type {
   CategoryInput,
   LocalizedString,
   ProductInput,
+  SiteSettingsInput,
 } from "@/lib/types";
 
 function asString(value: unknown) {
@@ -130,5 +131,21 @@ export function parseAnnouncementInput(body: unknown): AnnouncementInput | null 
     icon,
     sortOrder: asNumber(raw.sortOrder) ?? 0,
     published: asBoolean(raw.published, true),
+  };
+}
+
+export function parseSiteSettingsInput(body: unknown): SiteSettingsInput | null {
+  if (!body || typeof body !== "object") return null;
+  const raw = body as Record<string, unknown>;
+  const heroRaw = raw.hero;
+  if (!heroRaw || typeof heroRaw !== "object") return null;
+  const hero = heroRaw as Record<string, unknown>;
+  const lead = asLocalized(hero.lead);
+  if (!lead.ja && !lead.zh) return null;
+  return {
+    hero: {
+      imageUrl: asString(hero.imageUrl),
+      lead,
+    },
   };
 }

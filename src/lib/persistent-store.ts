@@ -81,6 +81,30 @@ export async function writeJsonArray<T>(filename: string, items: T[]) {
   await writeDataText(filename, JSON.stringify(items, null, 2));
 }
 
+export async function readJsonObject<T>(
+  filename: string,
+  fallback: T,
+): Promise<T> {
+  const existing = await readDataText(filename);
+  if (existing != null) {
+    return JSON.parse(existing) as T;
+  }
+
+  let seed = JSON.stringify(fallback, null, 2);
+  try {
+    seed = await fs.readFile(getBundledDataFile(filename), "utf8");
+  } catch {
+    /* use fallback */
+  }
+
+  await writeDataText(filename, seed);
+  return JSON.parse(seed) as T;
+}
+
+export async function writeJsonObject<T>(filename: string, value: T) {
+  await writeDataText(filename, JSON.stringify(value, null, 2));
+}
+
 export async function writeUploadFile(
   filename: string,
   data: Buffer,

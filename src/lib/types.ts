@@ -90,3 +90,17 @@ export type AnnouncementInput = {
   sortOrder: number;
   published: boolean;
 };
+
+/** 首页顶部 Banner（背景图 + 引导文案） */
+export type HeroSettings = {
+  imageUrl: string;
+  lead: LocalizedString;
+};
+
+export type SiteSettings = {
+  hero: HeroSettings;
+};
+
+export type SiteSettingsInput = {
+  hero: HeroSettings;
+};
