@@ -76,6 +76,8 @@ export type Announcement = {
   id: string;
   title: string;
   body: string;
+  /** 选填；展开后显示跳转按钮 */
+  linkUrl: string;
   icon: AnnouncementIcon;
   sortOrder: number;
   published: boolean;
@@ -86,6 +88,7 @@ export type Announcement = {
 export type AnnouncementInput = {
   title: string;
   body: string;
+  linkUrl: string;
   icon: AnnouncementIcon;
   sortOrder: number;
   published: boolean;
@@ -94,13 +97,20 @@ export type AnnouncementInput = {
 /** 首页顶部 Banner（背景图 + 引导文案） */
 export type HeroSettings = {
   imageUrl: string;
-  lead: LocalizedString;
+  lead: string;
+};
+
+export type FooterSettings = {
+  tagline: string;
+  copyright: string;
 };
 
 export type SiteSettings = {
   hero: HeroSettings;
+  footer: FooterSettings;
 };
 
 export type SiteSettingsInput = {
   hero: HeroSettings;
+  footer: FooterSettings;
 };

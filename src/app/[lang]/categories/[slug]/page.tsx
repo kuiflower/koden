@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { getCategoryBySlug } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
-import { isLocale, pickLocalized } from "@/lib/i18n";
+import { isSiteLocale, pickLocalized } from "@/lib/i18n";
 import { listProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -13,7 +13,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/[lang]/categories/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;
-  if (!isLocale(lang)) return {};
+  if (!isSiteLocale(lang)) return {};
   const category = await getCategoryBySlug(slug);
   if (!category) return {};
   return buildPageMetadata({
@@ -28,7 +28,7 @@ export default async function CategoryDetailPage({
   params,
 }: PageProps<"/[lang]/categories/[slug]">) {
   const { lang, slug } = await params;
-  if (!isLocale(lang)) notFound();
+  if (!isSiteLocale(lang)) notFound();
   const category = await getCategoryBySlug(slug);
   if (!category || !category.published) notFound();
   const dict = await getDictionary(lang);

@@ -1,14 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { defaultLocale, isLocale, locales } from "@/lib/i18n";
-
-function preferredLocale(request: NextRequest) {
-  const header = request.headers.get("accept-language") || "";
-  const lowered = header.toLowerCase();
-  if (lowered.includes("zh")) return "zh";
-  if (lowered.includes("ja")) return "ja";
-  return defaultLocale;
-}
+import { defaultLocale, isLocale } from "@/lib/i18n";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -22,9 +14,13 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const hasLocale = locales.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
-  );
+  // 中文版已下线，统一跳转到日语
+  if (pathname === "/zh" || pathname.startsWith("/zh/")) {
+    const rest = pathname.slice(3);
+    return NextResponse.redirect(new URL(`/ja${rest}`, request.url));
+  }
+
+  const hasLocale = pathname === "/ja" || pathname.startsWith("/ja/");
   if (hasLocale) {
     const maybe = pathname.split("/")[1];
     if (maybe && !isLocale(maybe)) {
@@ -33,9 +29,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const locale = preferredLocale(request);
   const url = request.nextUrl.clone();
-  url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
+  url.pathname = `/ja${pathname === "/" ? "" : pathname}`;
   return NextResponse.redirect(url);
 }
 

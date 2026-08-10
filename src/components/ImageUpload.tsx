@@ -37,6 +37,7 @@ export function ImageUpload({
   multiple = false,
   labels,
   purpose,
+  hint,
 }: {
   label: string;
   value: string | string[];
@@ -44,6 +45,7 @@ export function ImageUpload({
   multiple?: boolean;
   labels?: Partial<UploadLabels>;
   purpose?: string;
+  hint?: string;
 }) {
   const t = { ...defaultLabels, ...labels };
   const inputRef = useRef<HTMLInputElement>(null);
@@ -103,6 +105,7 @@ export function ImageUpload({
           onChange={(e) => void onPick(e.target.files)}
         />
       </div>
+      {hint ? <p className="text-xs leading-5 text-steel whitespace-pre-line">{hint}</p> : null}
       {error ? <p className="text-xs text-red-600">{error}</p> : null}
       {urls.length > 0 ? (
         <div className="flex flex-wrap gap-3">

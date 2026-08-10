@@ -5,7 +5,7 @@ import { ProductGallery } from "@/components/ProductGallery";
 import { getCategoryById } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
 import { formatPrice, productCover } from "@/lib/format";
-import { isLocale } from "@/lib/i18n";
+import { isSiteLocale } from "@/lib/i18n";
 import { getProductById } from "@/lib/products";
 import {
   buildPageMetadata,
@@ -20,7 +20,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/[lang]/products/[id]">): Promise<Metadata> {
   const { lang, id } = await params;
-  if (!isLocale(lang)) return {};
+  if (!isSiteLocale(lang)) return {};
   const product = await getProductById(id);
   if (!product) return {};
   return buildPageMetadata({
@@ -36,7 +36,7 @@ export default async function ProductDetailPage({
   params,
 }: PageProps<"/[lang]/products/[id]">) {
   const { lang, id } = await params;
-  if (!isLocale(lang)) notFound();
+  if (!isSiteLocale(lang)) notFound();
   const product = await getProductById(id);
   if (!product || !product.published) notFound();
   const category = await getCategoryById(product.categoryId);
@@ -44,7 +44,7 @@ export default async function ProductDetailPage({
   const name = product.name;
   const description = product.description;
   const url = `${getSiteUrl()}${localePath(lang, `/products/${product.id}`)}`;
-  const detailLabel = lang === "ja" ? "詳細画像" : "详情图";
+  const detailLabel = "詳細画像";
 
   return (
     <main className="mx-auto max-w-6xl px-5 py-12 md:px-8">
@@ -53,7 +53,6 @@ export default async function ProductDetailPage({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             productJsonLd({
-              locale: lang,
               name,
               description,
               brand: product.brand,

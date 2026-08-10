@@ -25,6 +25,7 @@ export function AnnouncementForm({
   ];
   const [title, setTitle] = useState(initial?.title || "");
   const [body, setBody] = useState(initial?.body || "");
+  const [linkUrl, setLinkUrl] = useState(initial?.linkUrl || "");
   const [icon, setIcon] = useState<AnnouncementIcon>(initial?.icon || "notice");
   const [sortOrder, setSortOrder] = useState(String(initial?.sortOrder ?? 0));
   const [published, setPublished] = useState(initial?.published ?? true);
@@ -38,6 +39,7 @@ export function AnnouncementForm({
     const payload = {
       title,
       body,
+      linkUrl,
       icon,
       sortOrder: Number(sortOrder) || 0,
       published,
@@ -83,6 +85,17 @@ export function AnnouncementForm({
           value={body}
           onChange={(e) => setBody(e.target.value)}
         />
+      </label>
+      <label className="block text-sm">
+        <span className="mb-1.5 block">{a.announcementLink}</span>
+        <input
+          className="field"
+          type="text"
+          value={linkUrl}
+          onChange={(e) => setLinkUrl(e.target.value)}
+          placeholder="https://... 或 /ja/..."
+        />
+        <span className="mt-1 block text-xs text-steel">{a.announcementLinkHint}</span>
       </label>
       <label className="block text-sm">
         <span className="mb-1.5 block">{a.icon}</span>

@@ -1,9 +1,10 @@
 {
   "hero": {
     "imageUrl": "/samples/hero.jpg",
-    "lead": {
-      "ja": "工具・空調資材のことなら株式会社 工電へ。",
-      "zh": "工具与空调资材，就找株式会社工電。"
-    }
+    "lead": "工具・空調資材のことなら株式会社 工電へ。"
+  },
+  "footer": {
+    "tagline": "リユースから新品・オリジナル製品まで。",
+    "copyright": "All rights reserved."
   }
 }

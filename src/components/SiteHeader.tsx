@@ -3,27 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/BrandMark";
-import { localeLabel, locales } from "@/lib/i18n";
 import type { Dictionary } from "@/lib/dictionaries";
-import type { Locale } from "@/lib/types";
 
-function swapLocalePath(pathname: string, next: Locale) {
-  const parts = pathname.split("/");
-  if (parts.length > 1 && (parts[1] === "ja" || parts[1] === "zh")) {
-    parts[1] = next;
-    return parts.join("/") || `/${next}`;
-  }
-  return `/${next}`;
-}
-
-export function SiteHeader({
-  locale,
-  dict,
-}: {
-  locale: Locale;
-  dict: Dictionary;
-}) {
+export function SiteHeader({ dict }: { dict: Dictionary }) {
   const pathname = usePathname();
+  const locale = "ja";
 
   const links = [
     { href: `/${locale}`, label: dict.nav.home },
@@ -52,17 +36,6 @@ export function SiteHeader({
             );
           })}
         </nav>
-        <div className="flex items-center gap-2 text-xs">
-          {locales.map((loc) => (
-            <Link
-              key={loc}
-              href={swapLocalePath(pathname, loc)}
-              className={loc === locale ? "lang-chip lang-chip-active" : "lang-chip"}
-            >
-              {localeLabel(loc)}
-            </Link>
-          ))}
-        </div>
       </div>
       <nav className="flex gap-4 overflow-x-auto px-5 py-2 text-sm text-ink/70 md:hidden">
         {links.map((link) => (

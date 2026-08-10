@@ -56,7 +56,7 @@ export function parseCategoryInput(body: unknown): CategoryInput | null {
   const raw = body as Record<string, unknown>;
   const slug = asString(raw.slug);
   const name = asLocalized(raw.name);
-  if (!slug || (!name.ja && !name.zh)) return null;
+  if (!slug || !name.ja) return null;
   return {
     slug,
     name,
@@ -128,6 +128,7 @@ export function parseAnnouncementInput(body: unknown): AnnouncementInput | null 
   return {
     title,
     body: asString(raw.body),
+    linkUrl: asString(raw.linkUrl),
     icon,
     sortOrder: asNumber(raw.sortOrder) ?? 0,
     published: asBoolean(raw.published, true),
@@ -140,12 +141,24 @@ export function parseSiteSettingsInput(body: unknown): SiteSettingsInput | null 
   const heroRaw = raw.hero;
   if (!heroRaw || typeof heroRaw !== "object") return null;
   const hero = heroRaw as Record<string, unknown>;
-  const lead = asLocalized(hero.lead);
-  if (!lead.ja && !lead.zh) return null;
+  const footerRaw = raw.footer;
+  const footer =
+    footerRaw && typeof footerRaw === "object"
+      ? (footerRaw as Record<string, unknown>)
+      : null;
+  const lead =
+    typeof hero.lead === "string"
+      ? hero.lead.trim()
+      : asLocalized(hero.lead).ja || asLocalized(hero.lead).zh;
+  if (!lead) return null;
   return {
     hero: {
       imageUrl: asString(hero.imageUrl),
       lead,
+    },
+    footer: {
+      tagline: asString(footer?.tagline),
+      copyright: asString(footer?.copyright),
     },
   };
 }

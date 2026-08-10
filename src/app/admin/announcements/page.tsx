@@ -28,6 +28,7 @@ export default async function AdminAnnouncementsPage() {
           <thead className="border-b border-line bg-paper text-xs uppercase tracking-wide text-steel">
             <tr>
               <th className="px-4 py-3">{a.title}</th>
+              <th className="px-4 py-3">{a.announcementLink}</th>
               <th className="px-4 py-3">{a.icon}</th>
               <th className="px-4 py-3">{a.sortOrder}</th>
               <th className="px-4 py-3">{a.status}</th>
@@ -38,6 +39,9 @@ export default async function AdminAnnouncementsPage() {
             {items.map((item) => (
               <tr key={item.id} className="border-b border-line">
                 <td className="px-4 py-3">{item.title}</td>
+                <td className="max-w-[12rem] truncate px-4 py-3 text-xs text-steel">
+                  {item.linkUrl?.trim() || "—"}
+                </td>
                 <td className="px-4 py-3">{item.icon}</td>
                 <td className="px-4 py-3">{item.sortOrder}</td>
                 <td className="px-4 py-3">{item.published ? a.published : a.draft}</td>

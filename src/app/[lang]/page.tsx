@@ -7,7 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { listAnnouncements } from "@/lib/announcements";
 import { listCategories } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
-import { isLocale, pickLocalized } from "@/lib/i18n";
+import { isSiteLocale, pickLocalized } from "@/lib/i18n";
 import { listProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo";
 import { getSiteSettings } from "@/lib/site-settings";
@@ -19,13 +19,13 @@ export async function generateMetadata({
   params,
 }: PageProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
-  if (!isLocale(lang)) return {};
+  if (!isSiteLocale(lang)) return {};
   const dict = await getDictionary(lang);
   const settings = await getSiteSettings();
   return buildPageMetadata({
     locale: lang,
     title: dict.brand,
-    description: pickLocalized(settings.hero.lead, lang) || dict.home.heroLead,
+    description: settings.hero.lead || dict.home.heroLead,
     path: "/",
     keywords: ["KODEN", "工具", "工具店", "ハンドツール", "電動工具"],
   });
@@ -33,7 +33,7 @@ export async function generateMetadata({
 
 export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
-  if (!isLocale(lang)) notFound();
+  if (!isSiteLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const [announcements, categories, products, settings] = await Promise.all([
     listAnnouncements({ publishedOnly: true }),
@@ -41,7 +41,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
     listProducts({ publishedOnly: true }),
     getSiteSettings(),
   ]);
-  const heroLead = pickLocalized(settings.hero.lead, lang) || dict.home.heroLead;
+  const heroLead = settings.hero.lead || dict.home.heroLead;
   const heroImage = settings.hero.imageUrl || "/samples/hero.jpg";
 
   return (
@@ -80,6 +80,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
           <AnnouncementList
             items={announcements}
             emptyText={dict.home.emptyAnnouncements}
+            linkLabel={dict.home.announcementViewLink}
           />
         </div>
       </section>

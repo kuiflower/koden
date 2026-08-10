@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { listCategories } from "@/lib/categories";
 import { getDictionary } from "@/lib/dictionaries";
-import { isLocale, pickLocalized } from "@/lib/i18n";
+import { isSiteLocale, pickLocalized } from "@/lib/i18n";
 import { listProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -13,7 +13,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/[lang]/categories">): Promise<Metadata> {
   const { lang } = await params;
-  if (!isLocale(lang)) return {};
+  if (!isSiteLocale(lang)) return {};
   const dict = await getDictionary(lang);
   return buildPageMetadata({
     locale: lang,
@@ -27,7 +27,7 @@ export default async function CategoriesPage({
   params,
 }: PageProps<"/[lang]/categories">) {
   const { lang } = await params;
-  if (!isLocale(lang)) notFound();
+  if (!isSiteLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const categories = await listCategories({ publishedOnly: true });
   const products = await listProducts({ publishedOnly: true });

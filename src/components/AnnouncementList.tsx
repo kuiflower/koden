@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { Announcement } from "@/lib/types";
 
@@ -57,12 +58,18 @@ function Icon({ type }: { type: Announcement["icon"] }) {
   );
 }
 
+function isExternalLink(url: string) {
+  return /^https?:\/\//i.test(url);
+}
+
 export function AnnouncementList({
   items,
   emptyText,
+  linkLabel,
 }: {
   items: Announcement[];
   emptyText: string;
+  linkLabel: string;
 }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -74,6 +81,7 @@ export function AnnouncementList({
     <div className="border-y border-line">
       {items.map((item) => {
         const open = openId === item.id;
+        const link = item.linkUrl?.trim();
         return (
           <div key={item.id} className="border-b border-line last:border-b-0">
             <button
@@ -95,9 +103,30 @@ export function AnnouncementList({
                 ⌄
               </span>
             </button>
-            {open && item.body ? (
+            {open && (item.body || link) ? (
               <div className="pb-5 pl-12 pr-2 text-sm leading-7 text-steel md:pl-14">
-                {item.body}
+                {item.body ? <p className="whitespace-pre-line">{item.body}</p> : null}
+                {link ? (
+                  <p className={item.body ? "mt-4" : ""}>
+                    {isExternalLink(link) ? (
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm font-medium text-copper-deep underline-offset-2 hover:underline"
+                      >
+                        {linkLabel}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link}
+                        className="inline-flex items-center text-sm font-medium text-copper-deep underline-offset-2 hover:underline"
+                      >
+                        {linkLabel}
+                      </Link>
+                    )}
+                  </p>
+                ) : null}
               </div>
             ) : null}
           </div>

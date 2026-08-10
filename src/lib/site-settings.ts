@@ -1,46 +1,49 @@
 import { readJsonObject, writeJsonObject } from "@/lib/persistent-store";
-import type { LocalizedString, SiteSettings, SiteSettingsInput } from "@/lib/types";
+import type { SiteSettings, SiteSettingsInput } from "@/lib/types";
 
 const FILE = "site-settings.json";
 
 export const defaultSiteSettings: SiteSettings = {
   hero: {
     imageUrl: "/samples/hero.jpg",
-    lead: {
-      ja: "工具・空調資材のことなら株式会社 工電へ。",
-      zh: "工具与空调资材，就找株式会社工電。",
-    },
+    lead: "工具・空調資材のことなら株式会社 工電へ。",
+  },
+  footer: {
+    tagline: "リユースから新品・オリジナル製品まで。",
+    copyright: "All rights reserved.",
   },
 };
 
-function normalizeLead(lead: Partial<LocalizedString> | undefined): LocalizedString {
-  return {
-    ja: lead?.ja?.trim() || defaultSiteSettings.hero.lead.ja,
-    zh: lead?.zh?.trim() || defaultSiteSettings.hero.lead.zh,
-  };
+function asLead(value: unknown): string {
+  if (typeof value === "string") return value.trim();
+  if (value && typeof value === "object") {
+    const obj = value as Record<string, unknown>;
+    return String(obj.ja || obj.zh || "").trim();
+  }
+  return "";
 }
 
-function normalizeSettings(raw: SiteSettings): SiteSettings {
+function normalizeSettings(raw: Partial<SiteSettings>): SiteSettings {
   return {
     hero: {
       imageUrl: raw.hero?.imageUrl?.trim() || defaultSiteSettings.hero.imageUrl,
-      lead: normalizeLead(raw.hero?.lead),
+      lead: asLead(raw.hero?.lead) || defaultSiteSettings.hero.lead,
+    },
+    footer: {
+      tagline: raw.footer?.tagline?.trim() || defaultSiteSettings.footer.tagline,
+      copyright:
+        raw.footer?.copyright?.trim() || defaultSiteSettings.footer.copyright,
     },
   };
 }
 
 export async function getSiteSettings() {
-  const raw = await readJsonObject<SiteSettings>(FILE, defaultSiteSettings);
+  const raw = await readJsonObject<Partial<SiteSettings>>(FILE, defaultSiteSettings);
   return normalizeSettings(raw);
 }
 
 export async function updateSiteSettings(input: SiteSettingsInput) {
-  const next = normalizeSettings({
-    hero: {
-      imageUrl: input.hero.imageUrl,
-      lead: input.hero.lead,
-    },
-  });
+  const next = normalizeSettings(input);
   await writeJsonObject(FILE, next);
   return next;
 }

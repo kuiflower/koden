@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUpload } from "@/components/ImageUpload";
 import type { Dictionary } from "@/lib/dictionaries";
+import { makeSlug } from "@/lib/slug";
 import type { Category } from "@/lib/types";
 
 export function CategoryForm({
@@ -17,11 +18,8 @@ export function CategoryForm({
 }) {
   const router = useRouter();
   const a = dict.admin;
-  const [slug, setSlug] = useState(initial?.slug || "");
   const [nameJa, setNameJa] = useState(initial?.name.ja || "");
-  const [nameZh, setNameZh] = useState(initial?.name.zh || "");
   const [descJa, setDescJa] = useState(initial?.description.ja || "");
-  const [descZh, setDescZh] = useState(initial?.description.zh || "");
   const [imageUrl, setImageUrl] = useState(initial?.imageUrl || "");
   const [sortOrder, setSortOrder] = useState(String(initial?.sortOrder ?? 0));
   const [published, setPublished] = useState(initial?.published ?? true);
@@ -32,10 +30,14 @@ export function CategoryForm({
     event.preventDefault();
     setLoading(true);
     setError("");
+    const slug =
+      initial?.slug ||
+      makeSlug(nameJa, "category") ||
+      `category-${Date.now().toString(36)}`;
     const payload = {
       slug,
-      name: { ja: nameJa, zh: nameZh },
-      description: { ja: descJa, zh: descZh },
+      name: { ja: nameJa, zh: "" },
+      description: { ja: descJa, zh: "" },
       imageUrl,
       sortOrder: Number(sortOrder) || 0,
       published,
@@ -61,30 +63,13 @@ export function CategoryForm({
   return (
     <form onSubmit={onSubmit} className="max-w-2xl space-y-4 border border-line bg-panel p-5 md:p-6">
       <label className="block text-sm">
-        <span className="mb-1.5 block">{a.slug}</span>
-        <input className="field" required value={slug} onChange={(e) => setSlug(e.target.value)} />
-        <span className="mt-1 block text-xs text-steel">{a.slugHint}</span>
+        <span className="mb-1.5 block">{a.name}</span>
+        <input className="field" required value={nameJa} onChange={(e) => setNameJa(e.target.value)} />
       </label>
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="block text-sm">
-          <span className="mb-1.5 block">{a.nameJa}</span>
-          <input className="field" value={nameJa} onChange={(e) => setNameJa(e.target.value)} />
-        </label>
-        <label className="block text-sm">
-          <span className="mb-1.5 block">{a.nameZh}</span>
-          <input className="field" value={nameZh} onChange={(e) => setNameZh(e.target.value)} />
-        </label>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="block text-sm">
-          <span className="mb-1.5 block">{a.descJa}</span>
-          <textarea className="field min-h-24" value={descJa} onChange={(e) => setDescJa(e.target.value)} />
-        </label>
-        <label className="block text-sm">
-          <span className="mb-1.5 block">{a.descZh}</span>
-          <textarea className="field min-h-24" value={descZh} onChange={(e) => setDescZh(e.target.value)} />
-        </label>
-      </div>
+      <label className="block text-sm">
+        <span className="mb-1.5 block">{a.categoryDescription}</span>
+        <textarea className="field min-h-24" value={descJa} onChange={(e) => setDescJa(e.target.value)} />
+      </label>
       <ImageUpload
         label={a.categoryCover}
         value={imageUrl}

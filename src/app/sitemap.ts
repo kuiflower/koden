@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { listCategories } from "@/lib/categories";
 import { listProducts } from "@/lib/products";
 import { getSiteUrl, localePath } from "@/lib/seo";
-import { locales } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -17,55 +16,29 @@ export default async function sitemap() {
   const site = getSiteUrl();
   const categories = await listCategories({ publishedOnly: true });
   const products = await listProducts({ publishedOnly: true });
-
-  const staticPaths = ["", "/categories"];
+  const locale = "ja" as const;
   const entries = [];
 
-  for (const locale of locales) {
-    for (const path of staticPaths) {
-      entries.push({
-        url: `${site}${localePath(locale, path || "/")}`,
-        lastModified: new Date(),
-        alternates: {
-          languages: Object.fromEntries(
-            locales.map((loc) => [
-              loc === "ja" ? "ja" : "zh-Hans",
-              `${site}${localePath(loc, path || "/")}`,
-            ]),
-          ),
-        },
-      });
-    }
+  const staticPaths = ["", "/categories"];
+  for (const path of staticPaths) {
+    entries.push({
+      url: `${site}${localePath(locale, path || "/")}`,
+      lastModified: new Date(),
+    });
+  }
 
-    for (const category of categories) {
-      entries.push({
-        url: `${site}${localePath(locale, `/categories/${category.slug}`)}`,
-        lastModified: new Date(category.updatedAt),
-        alternates: {
-          languages: Object.fromEntries(
-            locales.map((loc) => [
-              loc === "ja" ? "ja" : "zh-Hans",
-              `${site}${localePath(loc, `/categories/${category.slug}`)}`,
-            ]),
-          ),
-        },
-      });
-    }
+  for (const category of categories) {
+    entries.push({
+      url: `${site}${localePath(locale, `/categories/${category.slug}`)}`,
+      lastModified: new Date(category.updatedAt),
+    });
+  }
 
-    for (const product of products) {
-      entries.push({
-        url: `${site}${localePath(locale, `/products/${product.id}`)}`,
-        lastModified: new Date(product.updatedAt),
-        alternates: {
-          languages: Object.fromEntries(
-            locales.map((loc) => [
-              loc === "ja" ? "ja" : "zh-Hans",
-              `${site}${localePath(loc, `/products/${product.id}`)}`,
-            ]),
-          ),
-        },
-      });
-    }
+  for (const product of products) {
+    entries.push({
+      url: `${site}${localePath(locale, `/products/${product.id}`)}`,
+      lastModified: new Date(product.updatedAt),
+    });
   }
 
   return entries;

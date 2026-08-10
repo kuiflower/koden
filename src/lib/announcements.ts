@@ -6,7 +6,11 @@ const FILE = "announcements.json";
 
 export async function listAnnouncements(options?: { publishedOnly?: boolean }) {
   const items = await readJsonArray<Announcement>(FILE);
-  const sorted = [...items].sort((a, b) => {
+  const normalized = items.map((item) => ({
+    ...item,
+    linkUrl: item.linkUrl ?? "",
+  }));
+  const sorted = [...normalized].sort((a, b) => {
     if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
     return b.updatedAt.localeCompare(a.updatedAt);
   });

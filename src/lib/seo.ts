@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { hreflang, locales } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
 const SITE_NAME = "KODEN";
@@ -19,14 +18,12 @@ export function localePath(locale: Locale, path = "") {
 
 export function buildAlternates(locale: Locale, path = "") {
   const site = getSiteUrl();
-  const languages: Record<string, string> = {};
-  for (const loc of locales) {
-    languages[hreflang(loc)] = `${site}${localePath(loc, path)}`;
-  }
-  languages["x-default"] = `${site}${localePath("ja", path)}`;
   return {
     canonical: `${site}${localePath(locale, path)}`,
-    languages,
+    languages: {
+      ja: `${site}${localePath("ja", path)}`,
+      "x-default": `${site}${localePath("ja", path)}`,
+    },
   };
 }
 
@@ -51,8 +48,7 @@ export function buildPageMetadata({
     openGraph: {
       title: `${title} | ${SITE_NAME}`,
       description,
-      locale: locale === "ja" ? "ja_JP" : "zh_CN",
-      alternateLocale: locale === "ja" ? ["zh_CN"] : ["ja_JP"],
+      locale: "ja_JP",
       siteName: SITE_NAME,
       url: `${getSiteUrl()}${localePath(locale, path)}`,
       type: "website",
@@ -61,7 +57,6 @@ export function buildPageMetadata({
 }
 
 export function productJsonLd({
-  locale,
   name,
   description,
   brand,
@@ -70,7 +65,6 @@ export function productJsonLd({
   currency,
   url,
 }: {
-  locale: Locale;
   name: string;
   description: string;
   brand: string;
@@ -91,7 +85,7 @@ export function productJsonLd({
         }
       : undefined,
     image: imageUrl || undefined,
-    inLanguage: locale === "ja" ? "ja" : "zh-Hans",
+    inLanguage: "ja",
     url,
     offers:
       price != null

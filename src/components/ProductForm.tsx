@@ -100,7 +100,7 @@ export function ProductForm({
         >
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
-              {cat.name.zh || cat.name.ja} / {cat.name.ja}
+              {cat.name.ja || cat.name.zh}
             </option>
           ))}
         </select>
@@ -184,11 +184,13 @@ export function ProductForm({
       </label>
       <ImageUpload
         label={a.coverImages}
+        hint={a.productCoverImageSpec}
         multiple
         value={coverImages}
         onChange={(next) =>
           setCoverImages(Array.isArray(next) ? next : next ? [next] : [])
         }
+        purpose="product"
         labels={{
           upload: a.uploadLocal,
           uploading: a.uploading,
@@ -199,9 +201,11 @@ export function ProductForm({
       />
       <ImageUpload
         label={a.detailImages}
+        hint={a.productDetailImageSpec}
         multiple
         value={detailImages}
         onChange={(next) => setDetailImages(Array.isArray(next) ? next : next ? [next] : [])}
+        purpose="product"
         labels={{
           upload: a.uploadLocal,
           uploading: a.uploading,

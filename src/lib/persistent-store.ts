@@ -111,7 +111,9 @@ export async function writeUploadFile(
   contentType = "image/jpeg",
 ) {
   if (useBlob()) {
-    await put(uploadBlobPath(filename), data, {
+    // sharp 输出的 Buffer 在 Vercel 上可能带 SharedArrayBuffer，Blob SDK 会报错；复制一份即可
+    const body = Buffer.from(data);
+    await put(uploadBlobPath(filename), body, {
       access: "private",
       addRandomSuffix: false,
       allowOverwrite: true,

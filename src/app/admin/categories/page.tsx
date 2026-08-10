@@ -40,9 +40,6 @@ export default async function AdminCategoriesPage() {
               <tr key={item.id} className="border-b border-line">
                 <td className="px-4 py-3">
                   {pickLocalized(item.name, locale)}
-                  <div className="text-xs text-steel">
-                    {item.name.ja} / {item.name.zh}
-                  </div>
                 </td>
                 <td className="px-4 py-3">{item.slug}</td>
                 <td className="px-4 py-3">{item.sortOrder}</td>
