@@ -19,6 +19,14 @@ export function BannerForm({
   const [lead, setLead] = useState(initial.hero.lead || "");
   const [tagline, setTagline] = useState(initial.footer.tagline || "");
   const [copyright, setCopyright] = useState(initial.footer.copyright || "");
+  const [contactLead, setContactLead] = useState(initial.contact.lead || "");
+  const [postal, setPostal] = useState(initial.contact.postal || "");
+  const [address, setAddress] = useState(initial.contact.address || "");
+  const [phone, setPhone] = useState(initial.contact.phone || "");
+  const [email, setEmail] = useState(initial.contact.email || "");
+  const [hours, setHours] = useState(initial.contact.hours || "");
+  const [mapEmbedUrl, setMapEmbedUrl] = useState(initial.contact.mapEmbedUrl || "");
+  const [mapLinkUrl, setMapLinkUrl] = useState(initial.contact.mapLinkUrl || "");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -32,6 +40,16 @@ export function BannerForm({
       body: JSON.stringify({
         hero: { imageUrl, lead },
         footer: { tagline, copyright },
+        contact: {
+          lead: contactLead,
+          postal,
+          address,
+          phone,
+          email,
+          hours,
+          mapEmbedUrl,
+          mapLinkUrl,
+        },
       }),
     });
     setLoading(false);
@@ -70,6 +88,71 @@ export function BannerForm({
             required
             value={lead}
             onChange={(e) => setLead(e.target.value)}
+          />
+        </label>
+      </section>
+
+      <section className="space-y-4 border border-line bg-panel p-5 md:p-6">
+        <h2 className="text-sm font-semibold text-ink">{a.homeSectionContact}</h2>
+        <label className="block text-sm">
+          <span className="mb-1.5 block">{a.contactLeadText}</span>
+          <textarea
+            className="field min-h-16"
+            required
+            value={contactLead}
+            onChange={(e) => setContactLead(e.target.value)}
+          />
+        </label>
+        <label className="block text-sm">
+          <span className="mb-1.5 block">{a.contactPostal}</span>
+          <input className="field" required value={postal} onChange={(e) => setPostal(e.target.value)} />
+        </label>
+        <label className="block text-sm">
+          <span className="mb-1.5 block">{a.contactAddress}</span>
+          <textarea
+            className="field min-h-20"
+            required
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </label>
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="block text-sm">
+            <span className="mb-1.5 block">{a.contactPhone}</span>
+            <input className="field" required value={phone} onChange={(e) => setPhone(e.target.value)} />
+          </label>
+          <label className="block text-sm">
+            <span className="mb-1.5 block">{a.contactEmail}</span>
+            <input
+              className="field"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+        </div>
+        <label className="block text-sm">
+          <span className="mb-1.5 block">{a.contactHours}</span>
+          <input className="field" required value={hours} onChange={(e) => setHours(e.target.value)} />
+        </label>
+        <label className="block text-sm">
+          <span className="mb-1.5 block">{a.contactMapEmbed}</span>
+          <input
+            className="field"
+            required
+            value={mapEmbedUrl}
+            onChange={(e) => setMapEmbedUrl(e.target.value)}
+          />
+          <span className="mt-1 block text-xs text-steel">{a.contactMapEmbedHint}</span>
+        </label>
+        <label className="block text-sm">
+          <span className="mb-1.5 block">{a.contactMapLink}</span>
+          <input
+            className="field"
+            required
+            value={mapLinkUrl}
+            onChange={(e) => setMapLinkUrl(e.target.value)}
           />
         </label>
       </section>

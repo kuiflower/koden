@@ -6,5 +6,15 @@
   "footer": {
     "tagline": "リユースから新品・オリジナル製品まで。",
     "copyright": "All rights reserved."
+  },
+  "contact": {
+    "lead": "ご来店・お問い合わせはこちらから。",
+    "postal": "〒904-2154",
+    "address": "沖縄県沖縄市東1丁目5-17 GEビルHIGASHI 1階",
+    "phone": "098-975-6155",
+    "email": "info@koden.jp",
+    "hours": "平日 8:00〜17:30 / 土日祝 9:00〜17:30",
+    "mapEmbedUrl": "https://maps.google.com/maps?cid=6777018781488453759&hl=ja&z=17&output=embed",
+    "mapLinkUrl": "https://www.google.com/maps?cid=6777018781488453759"
   }
 }

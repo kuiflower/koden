@@ -105,12 +105,25 @@ export type FooterSettings = {
   copyright: string;
 };
 
+export type ContactSettings = {
+  lead: string;
+  postal: string;
+  address: string;
+  phone: string;
+  email: string;
+  hours: string;
+  mapEmbedUrl: string;
+  mapLinkUrl: string;
+};
+
 export type SiteSettings = {
   hero: HeroSettings;
   footer: FooterSettings;
+  contact: ContactSettings;
 };
 
 export type SiteSettingsInput = {
   hero: HeroSettings;
   footer: FooterSettings;
+  contact: ContactSettings;
 };

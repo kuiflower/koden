@@ -146,6 +146,11 @@ export function parseSiteSettingsInput(body: unknown): SiteSettingsInput | null 
     footerRaw && typeof footerRaw === "object"
       ? (footerRaw as Record<string, unknown>)
       : null;
+  const contactRaw = raw.contact;
+  const contact =
+    contactRaw && typeof contactRaw === "object"
+      ? (contactRaw as Record<string, unknown>)
+      : null;
   const lead =
     typeof hero.lead === "string"
       ? hero.lead.trim()
@@ -159,6 +164,16 @@ export function parseSiteSettingsInput(body: unknown): SiteSettingsInput | null 
     footer: {
       tagline: asString(footer?.tagline),
       copyright: asString(footer?.copyright),
+    },
+    contact: {
+      lead: asString(contact?.lead),
+      postal: asString(contact?.postal),
+      address: asString(contact?.address),
+      phone: asString(contact?.phone),
+      email: asString(contact?.email),
+      hours: asString(contact?.hours),
+      mapEmbedUrl: asString(contact?.mapEmbedUrl),
+      mapLinkUrl: asString(contact?.mapLinkUrl),
     },
   };
 }

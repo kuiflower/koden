@@ -10,8 +10,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { isSiteLocale, pickLocalized } from "@/lib/i18n";
 import { listProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo";
-import { getSiteSettings } from "@/lib/site-settings";
-import { storeContact } from "@/lib/store-contact";
+import { getSiteSettings, contactPhoneHref } from "@/lib/site-settings";
 
 export const dynamic = "force-dynamic";
 
@@ -203,7 +202,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
             <h2 className="text-2xl font-semibold text-ink md:text-3xl">
               {dict.home.contactTitle}
             </h2>
-            <p className="mt-2 text-sm text-steel">{dict.home.contactLead}</p>
+            <p className="mt-2 text-sm text-steel">{settings.contact.lead}</p>
           </div>
 
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
@@ -213,9 +212,9 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
                   {dict.home.contactAddress}
                 </p>
                 <p className="mt-1.5 text-base leading-7 text-ink">
-                  {storeContact.postal}
+                  {settings.contact.postal}
                   <br />
-                  {storeContact.address[lang]}
+                  {settings.contact.address}
                 </p>
               </div>
               <div>
@@ -223,10 +222,10 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
                   {dict.home.contactPhone}
                 </p>
                 <a
-                  href={storeContact.phoneHref}
+                  href={contactPhoneHref(settings.contact.phone)}
                   className="mt-1.5 inline-block text-base text-ink hover:text-copper-deep"
                 >
-                  {storeContact.phone}
+                  {settings.contact.phone}
                 </a>
               </div>
               <div>
@@ -234,10 +233,10 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
                   {dict.home.contactEmail}
                 </p>
                 <a
-                  href={`mailto:${storeContact.email}`}
+                  href={`mailto:${settings.contact.email}`}
                   className="mt-1.5 inline-block text-base text-ink hover:text-copper-deep"
                 >
-                  {storeContact.email}
+                  {settings.contact.email}
                 </a>
               </div>
               <div>
@@ -245,11 +244,11 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
                   {dict.home.contactHours}
                 </p>
                 <p className="mt-1.5 text-base text-ink">
-                  {storeContact.hours[lang]}
+                  {settings.contact.hours}
                 </p>
               </div>
               <a
-                href={storeContact.mapLinkUrl}
+                href={settings.contact.mapLinkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary inline-flex"
@@ -260,8 +259,8 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
 
             <div className="overflow-hidden border border-line bg-paper">
               <iframe
-                title={storeContact.name[lang]}
-                src={storeContact.mapEmbedUrl}
+                title="KODEN"
+                src={settings.contact.mapEmbedUrl}
                 className="h-[280px] w-full border-0 md:h-[360px]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
