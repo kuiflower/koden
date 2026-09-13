@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const GOOGLE_VERIFY = "googleafa510eeae3a8a4366.html";
+const GOOGLE_VERIFY = "googleafa510eae3a8a436.html";
 
 const nextConfig: NextConfig = {
   async rewrites() {
