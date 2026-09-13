@@ -12,6 +12,7 @@ export function SiteHeader({ dict }: { dict: Dictionary }) {
   const links = [
     { href: `/${locale}`, label: dict.nav.home },
     { href: `/${locale}/categories`, label: dict.nav.categories },
+    { href: `/${locale}/sikelan`, label: dict.nav.sikelan },
     { href: `/${locale}#contact`, label: dict.nav.contact },
   ];
 

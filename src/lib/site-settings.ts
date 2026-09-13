@@ -18,10 +18,10 @@ export const defaultContact: ContactSettings = {
 export const defaultSiteSettings: SiteSettings = {
   hero: {
     imageUrl: "/samples/hero.jpg",
-    lead: "工具・空調資材のことなら株式会社 工電へ。",
+    lead: "工具・空調資材、SIKELAN（sikelan）のことなら株式会社 工電へ。",
   },
   footer: {
-    tagline: "リユースから新品・オリジナル製品まで。",
+    tagline: "リユースから新品・オリジナル製品、SIKELAN まで。",
     copyright: "All rights reserved.",
   },
   contact: defaultContact,

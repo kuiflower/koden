@@ -23,10 +23,20 @@ const bodySc = Noto_Sans_SC({
 
 export const metadata: Metadata = {
   title: {
-    default: "KODEN",
+    default: "KODEN | SIKELAN 沖縄の工具・空調資材",
     template: "%s | KODEN",
   },
-  description: "KODEN — 工具实体店介绍与商品展示",
+  description:
+    "沖縄市の株式会社工電（KODEN）。SIKELAN（sikelan）をはじめ、工具・空調施工資材を実店舗でご案内します。",
+  keywords: [
+    "SIKELAN",
+    "sikelan",
+    "KODEN",
+    "工電",
+    "沖縄",
+    "空調資材",
+    "工具",
+  ],
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),

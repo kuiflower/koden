@@ -20,13 +20,12 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isSiteLocale(lang)) return {};
   const dict = await getDictionary(lang);
-  const settings = await getSiteSettings();
   return buildPageMetadata({
     locale: lang,
-    title: dict.brand,
-    description: settings.hero.lead || dict.home.heroLead,
+    title: dict.home.seoTitle,
+    description: dict.home.seoDescription,
     path: "/",
-    keywords: ["KODEN", "工具", "工具店", "ハンドツール", "電動工具"],
+    keywords: ["SIKELAN", "sikelan", "KODEN", "工電", "沖縄", "空調資材", "工具"],
   });
 }
 
@@ -58,6 +57,9 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
             <BrandMark href={null} variant="hero" tone="dark" />
             <p className="mt-4 text-sm leading-6 text-white/90 md:mt-6 md:text-lg md:leading-7">
               {heroLead}
+            </p>
+            <p className="mt-3 text-xs tracking-[0.22em] text-brand-yellow md:text-sm">
+              {dict.home.sikelanBadge}
             </p>
             <div className="mt-5 flex flex-wrap gap-2.5 md:mt-8 md:gap-3">
               <Link href={`/${lang}/categories`} className="btn-primary-on-dark">
@@ -182,15 +184,24 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
               {dict.home.aboutProductsTitle}
             </h3>
             <ul className="mt-5 space-y-0">
-              {dict.home.aboutProducts.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-center gap-3 border-b border-line py-3.5 text-sm text-ink last:border-b-0 md:text-base"
-                >
-                  <span className="h-1.5 w-1.5 shrink-0 bg-brand-yellow" />
-                  {item}
-                </li>
-              ))}
+              {dict.home.aboutProducts.map((item) => {
+                const isSikelan = /sikelan/i.test(item);
+                return (
+                  <li
+                    key={item}
+                    className="flex items-center gap-3 border-b border-line py-3.5 text-sm text-ink last:border-b-0 md:text-base"
+                  >
+                    <span className="h-1.5 w-1.5 shrink-0 bg-brand-yellow" />
+                    {isSikelan ? (
+                      <Link href={`/${lang}/sikelan`} className="hover:text-copper-deep">
+                        {item}
+                      </Link>
+                    ) : (
+                      item
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

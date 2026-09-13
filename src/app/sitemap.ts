@@ -19,7 +19,7 @@ export default async function sitemap() {
   const locale = "ja" as const;
   const entries = [];
 
-  const staticPaths = ["", "/categories"];
+  const staticPaths = ["", "/categories", "/sikelan"];
   for (const path of staticPaths) {
     entries.push({
       url: `${site}${localePath(locale, path || "/")}`,

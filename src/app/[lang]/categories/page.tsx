@@ -18,8 +18,9 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale: lang,
     title: dict.categories.title,
-    description: dict.categories.lead,
+    description: `${dict.categories.lead} SIKELAN（sikelan）関連の空調資材もご相談ください。`,
     path: "/categories",
+    keywords: ["SIKELAN", "sikelan", "カテゴリー", "空調資材"],
   });
 }
 

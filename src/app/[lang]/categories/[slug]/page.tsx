@@ -19,8 +19,16 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale: lang,
     title: pickLocalized(category.name, lang),
-    description: pickLocalized(category.description, lang),
+    description:
+      pickLocalized(category.description, lang) ||
+      `${pickLocalized(category.name, lang)} — KODEN / SIKELAN`,
     path: `/categories/${category.slug}`,
+    keywords: [
+      pickLocalized(category.name, lang),
+      "SIKELAN",
+      "sikelan",
+      "KODEN",
+    ],
   });
 }
 

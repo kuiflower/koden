@@ -1,22 +1,24 @@
 {
   "brand": "KODEN",
-  "tagline": "リユースから新品・オリジナル製品まで。",
+  "tagline": "リユースから新品・オリジナル製品、SIKELAN まで。",
   "nav": {
     "home": "ホーム",
     "categories": "カテゴリー",
+    "sikelan": "SIKELAN",
     "contact": "お問い合わせ",
     "admin": "管理"
   },
   "home": {
     "heroTitle": "工具の実店舗",
-    "heroLead": "工具・空調資材のことなら株式会社 工電へ。",
+    "heroLead": "工具・空調資材、SIKELAN（sikelan）のことなら株式会社 工電へ。",
+    "sikelanBadge": "SIKELAN 取扱",
     "aboutLabel": "ABOUT",
     "aboutTitle": "株式会社 工電について",
-    "aboutLead": "リユースから新品・オリジナル製品まで。工具・空調資材のことなら株式会社 工電へ。",
+    "aboutLead": "リユースから新品・オリジナル製品まで。工具・空調資材、SIKELAN（sikelan）のことなら株式会社 工電へ。",
     "aboutBody": [
       "株式会社 工電は、リユース工具・輸入工具・エアコン・空調施工資材を幅広く取り扱う専門企業です。",
       "プロの職人様から法人様、DIYユーザーまで、現場で本当に役立つ商品を厳選してご提供しています。",
-      "中古工具の販売だけでなく、優れた輸入工具を取り入れ、日本市場へ展開。さらに、高品質なオリジナルペアコイルやドレンホースなど、空調施工に欠かせない資材も取り揃えています。"
+      "中古工具の販売だけでなく、優れた輸入工具を取り入れ、日本市場へ展開。さらに、高品質なオリジナルペアコイルやドレンホースなど、空調施工に欠かせない資材も取り揃えています。空調施工資材では SIKELAN（sikelan）関連製品もご案内しています。"
     ],
     "aboutMotto": "良いものを、より良い価格で。",
     "aboutProductsTitle": "取扱商品",
@@ -26,7 +28,8 @@
       "家庭用・業務用エアコン",
       "オリジナルペアコイル",
       "ドレンホース",
-      "空調施工資材・電材各種"
+      "空調施工資材・電材各種",
+      "SIKELAN（sikelan）空調資材"
     ],
     "aboutClosing": "株式会社 工電は、これからも品質・価格・サービスにこだわり、皆様の信頼に応え続けます。",
     "categoriesTitle": "商品カテゴリー",
@@ -46,7 +49,9 @@
     "emptyAnnouncements": "現在お知らせはありません。",
     "announcementViewLink": "詳しく見る",
     "featuredTitle": "おすすめ商品",
-    "featuredLead": "店頭のおすすめ商品をカテゴリー別にご紹介します。"
+    "featuredLead": "店頭のおすすめ商品をカテゴリー別にご紹介します。",
+    "seoTitle": "SIKELAN 沖縄の工具・空調資材",
+    "seoDescription": "沖縄市の株式会社工電（KODEN）。SIKELAN（sikelan）をはじめ、工具・空調施工資材を実店舗でご案内します。"
   },
   "categories": {
     "title": "カテゴリー一覧",
@@ -63,7 +68,23 @@
     "keywords": "キーワード"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "sikelan": "SIKELAN（sikelan）取扱"
+  },
+  "sikelan": {
+    "title": "SIKELAN",
+    "pageTitle": "SIKELAN（sikelan）| 沖縄の工具・空調資材",
+    "description": "沖縄で SIKELAN（sikelan）をお探しなら株式会社工電（KODEN）。沖縄市東の実店舗で、空調施工資材・工具をご案内します。",
+    "eyebrow": "BRAND",
+    "lead": "沖縄で SIKELAN（sikelan）をお探しなら、株式会社工電（KODEN）へ。",
+    "body": [
+      "SIKELAN（sikelan）は、空調・冷凍関連の資材や工具で知られるブランドです。",
+      "KODEN（株式会社工電）は沖縄市東の実店舗として、工具・空調施工資材とともに SIKELAN 関連製品をご案内しています。",
+      "在庫・仕様・納期は店頭またはお電話でご確認ください。プロの職人様・法人様のご相談も歓迎します。"
+    ],
+    "ctaCategories": "取扱カテゴリーを見る",
+    "ctaContact": "店舗へ問い合わせる",
+    "productLine": "SIKELAN（sikelan）空調資材"
   },
   "admin": {
     "loginTitle": "KODEN 管理ログイン",
