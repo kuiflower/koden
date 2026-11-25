@@ -49,12 +49,15 @@ npm run dev
 - 前台：`/ja` · `/zh` 双语路径，分类展示、商品详情、商品预订到店、一般到店预约
 - 后台：分类 / 商品 CRUD，商品预订列表，到店预约列表，中日界面切换
 - SEO：metadata、hreflang、sitemap、robots、商品 JSON-LD
-- 数据：本地 `data/*.json`；线上走 Vercel Blob 持久化（免费额度内）
+- 数据：本地 `data/*.json`；线上优先 GitHub `cms-data` 分支持久化（不受 Blob 额度限制），兼容旧 Blob 回退
 
 ## 线上环境变量（Vercel）
 
 - `ADMIN_PASSWORD`：后台密码
-- `BLOB_READ_WRITE_TOKEN`：Vercel Blob（已自动注入）
+- `GITHUB_TOKEN`：GitHub Personal Access Token（`repo` 权限），用于读写内容
+- `GITHUB_REPO`：`kuiflower/koden`（可选，有默认值）
+- `GITHUB_BRANCH`：`cms-data`（可选；独立内容分支，不触发生产部署）
+- `BLOB_READ_WRITE_TOKEN`：旧方案 Vercel Blob（配置了 `GITHUB_TOKEN` 后不再使用）
 - `NEXT_PUBLIC_SITE_URL`：`https://koden-nine.vercel.app`
 
 ## 技術棧

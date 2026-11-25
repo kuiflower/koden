@@ -1,18 +1,27 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { del, get, put } from "@vercel/blob";
+import {
+  githubDeleteFile,
+  githubReadFile,
+  githubWriteFile,
+  useGitHubStore,
+} from "@/lib/github-store";
 import { getBundledDataFile, getDataDir, getUploadDir } from "@/lib/paths";
 
 /**
- * 本地：读写项目 data/ 与 public/uploads/
- * Vercel：有 BLOB_READ_WRITE_TOKEN 时读写私有 Blob（跨部署持久化）
- * Blob 额度打满（403）时自动回退到仓库内置 data/，保证前台可打开
+ * 存储优先级：
+ * 1) GitHub（GITHUB_TOKEN）—— 推荐，不受 Vercel Blob 额度限制
+ * 2) 本地文件系统（开发）
+ * 3) Vercel Blob（兼容旧部署；额度打满时回退仓库内置 data/）
  */
+
 function useBlob() {
+  // 已配置 GitHub 时不再走 Blob，避免 403 干扰
+  if (useGitHubStore()) return false;
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 }
 
-/** Blob 临时不可用时，跳过后续请求，避免每次打 403 拖垮页面 */
 let blobCooldownUntil = 0;
 
 function blobReady() {
@@ -25,7 +34,6 @@ function markBlobUnavailable(err: unknown) {
     /403|Forbidden|limit|quota|usage|exceed/i.test(message) ||
     message.includes("Failed to fetch blob");
   if (limited) {
-    // Hobby 额度通常按约 30 天窗口恢复；实例内先冷却，减少无效调用
     blobCooldownUntil = Date.now() + 6 * 60 * 60 * 1000;
     console.warn("[blob] unavailable, falling back to bundled data:", message);
   } else {
@@ -39,6 +47,14 @@ function dataBlobPath(filename: string) {
 
 function uploadBlobPath(filename: string) {
   return `uploads/${filename}`;
+}
+
+function dataGitPath(filename: string) {
+  return `data/${filename}`;
+}
+
+function uploadGitPath(filename: string) {
+  return `public/uploads/${filename}`;
 }
 
 async function streamToBuffer(stream: ReadableStream<Uint8Array> | null) {
@@ -65,6 +81,17 @@ async function readLocalDataText(filename: string): Promise<string | null> {
 }
 
 export async function readDataText(filename: string): Promise<string | null> {
+  if (useGitHubStore()) {
+    try {
+      const file = await githubReadFile(dataGitPath(filename));
+      if (file) return file.content.toString("utf8");
+    } catch (err) {
+      console.warn("[github] read data failed, fallback:", err);
+    }
+    // 分支尚无文件时，回退仓库内置 seed（不强制写回，避免空写）
+    return (await readLocalDataText(filename)) ?? (await readBundledText(filename));
+  }
+
   if (blobReady()) {
     try {
       const result = await get(dataBlobPath(filename), {
@@ -78,11 +105,19 @@ export async function readDataText(filename: string): Promise<string | null> {
     }
   }
 
-  // Blob 不可用时：本地 data 目录 → 仓库内置 seed
   return (await readLocalDataText(filename)) ?? (await readBundledText(filename));
 }
 
 export async function writeDataText(filename: string, content: string) {
+  if (useGitHubStore()) {
+    await githubWriteFile(
+      dataGitPath(filename),
+      content,
+      `cms: update ${filename}`,
+    );
+    return;
+  }
+
   if (blobReady()) {
     try {
       await put(dataBlobPath(filename), content, {
@@ -95,14 +130,14 @@ export async function writeDataText(filename: string, content: string) {
     } catch (err) {
       markBlobUnavailable(err);
       throw new Error(
-        "云端存储额度已用尽或暂不可用，数据未能保存。请稍后再试或升级 Vercel 方案。",
+        "云端存储额度已用尽或暂不可用，数据未能保存。请配置 GitHub 存储或稍后再试。",
       );
     }
   }
 
   if (useBlob()) {
     throw new Error(
-      "云端存储额度已用尽或暂不可用，数据未能保存。请稍后再试或升级 Vercel 方案。",
+      "云端存储额度已用尽或暂不可用，数据未能保存。请配置 GitHub 存储或稍后再试。",
     );
   }
 
@@ -121,19 +156,20 @@ export async function readJsonArray<T>(filename: string): Promise<T[]> {
     }
   }
 
-  let seed = "[]";
-  try {
-    seed = (await readBundledText(filename)) || "[]";
-  } catch {
-    seed = "[]";
-  }
+  const seed = (await readBundledText(filename)) || "[]";
 
-  // 仅在 Blob 可用时回写 seed，避免额度打满时反复写失败
-  if (blobReady() || !useBlob()) {
+  // 有 GitHub 时把 seed 落到 cms 分支，后续读写都走 GitHub
+  if (useGitHubStore()) {
+    try {
+      await writeDataText(filename, seed);
+    } catch (err) {
+      console.warn("[github] seed write skipped:", err);
+    }
+  } else if (blobReady() || !useBlob()) {
     try {
       await writeDataText(filename, seed);
     } catch {
-      /* ignore seed write failures */
+      /* ignore */
     }
   }
   return JSON.parse(seed) as T[];
@@ -163,7 +199,13 @@ export async function readJsonObject<T>(
     /* use fallback */
   }
 
-  if (blobReady() || !useBlob()) {
+  if (useGitHubStore()) {
+    try {
+      await writeDataText(filename, seed);
+    } catch (err) {
+      console.warn("[github] seed write skipped:", err);
+    }
+  } else if (blobReady() || !useBlob()) {
     try {
       await writeDataText(filename, seed);
     } catch {
@@ -182,6 +224,15 @@ export async function writeUploadFile(
   data: Buffer,
   contentType = "image/jpeg",
 ) {
+  if (useGitHubStore()) {
+    await githubWriteFile(
+      uploadGitPath(filename),
+      data,
+      `cms: upload ${filename}`,
+    );
+    return;
+  }
+
   if (blobReady()) {
     try {
       const body = Buffer.from(data);
@@ -195,14 +246,14 @@ export async function writeUploadFile(
     } catch (err) {
       markBlobUnavailable(err);
       throw new Error(
-        "图片云端存储额度已用尽或暂不可用，上传失败。请稍后再试或升级 Vercel 方案。",
+        "图片云端存储额度已用尽或暂不可用，上传失败。请配置 GitHub 存储或稍后再试。",
       );
     }
   }
 
   if (useBlob()) {
     throw new Error(
-      "图片云端存储额度已用尽或暂不可用，上传失败。请稍后再试或升级 Vercel 方案。",
+      "图片云端存储额度已用尽或暂不可用，上传失败。请配置 GitHub 存储或稍后再试。",
     );
   }
 
@@ -212,6 +263,16 @@ export async function writeUploadFile(
 }
 
 export async function readUploadFile(filename: string): Promise<Buffer | null> {
+  if (useGitHubStore()) {
+    try {
+      const file = await githubReadFile(uploadGitPath(filename));
+      return file?.content ?? null;
+    } catch (err) {
+      console.warn("[github] read upload failed:", err);
+      return null;
+    }
+  }
+
   if (blobReady()) {
     try {
       const result = await get(uploadBlobPath(filename), {
@@ -236,6 +297,15 @@ export async function readUploadFile(filename: string): Promise<Buffer | null> {
 }
 
 export async function deleteUploadFile(filename: string) {
+  if (useGitHubStore()) {
+    try {
+      await githubDeleteFile(uploadGitPath(filename), `cms: delete ${filename}`);
+    } catch (err) {
+      console.warn("[github] delete upload failed:", err);
+    }
+    return;
+  }
+
   if (blobReady()) {
     try {
       await del(uploadBlobPath(filename));

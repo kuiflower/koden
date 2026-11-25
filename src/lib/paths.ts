@@ -19,7 +19,12 @@ export function getBundledDataFile(filename: string) {
 }
 
 export function toPublicUploadUrl(filename: string) {
-  if (process.env.VERCEL || process.env.BLOB_READ_WRITE_TOKEN) {
+  // 线上统一走 /api/media，便于从 GitHub / Blob 读取上传文件
+  if (
+    process.env.VERCEL ||
+    process.env.GITHUB_TOKEN ||
+    process.env.BLOB_READ_WRITE_TOKEN
+  ) {
     return `/api/media/${filename}`;
   }
   return `/uploads/${filename}`;
