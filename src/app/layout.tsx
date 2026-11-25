@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Noto_Sans_JP, Noto_Sans_SC } from "next/font/google";
+import { Montserrat, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
 /** 接近官方 KODEN 字标：粗体几何无衬线 */
@@ -7,18 +7,14 @@ const brand = Montserrat({
   variable: "--font-brand",
   subsets: ["latin"],
   weight: ["800", "900"],
+  display: "swap",
 });
 
 const bodyJp = Noto_Sans_JP({
   variable: "--font-body-jp",
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
-});
-
-const bodySc = Noto_Sans_SC({
-  variable: "--font-body-sc",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -54,12 +50,12 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${brand.variable} ${bodyJp.variable} ${bodySc.variable} h-full`}
+      className={`${brand.variable} ${bodyJp.variable} h-full`}
       suppressHydrationWarning
     >
       <body
         className="min-h-screen antialiased"
-        style={{ fontFamily: "var(--font-body-jp), var(--font-body-sc), sans-serif" }}
+        style={{ fontFamily: "var(--font-body-jp), sans-serif" }}
       >
         {children}
       </body>
