@@ -27,7 +27,7 @@
   --color-copper-deep: var(--copper-deep);
   --color-brand-yellow: var(--brand-yellow);
   --color-line: var(--line);
-  --font-sans: var(--font-body-jp), var(--font-body-sc);
+  --font-sans: var(--font-body-jp), sans-serif;
   --font-display: var(--font-brand);
 }
 
@@ -46,7 +46,7 @@ body {
     radial-gradient(900px 500px at 100% 0%, rgba(18, 20, 23, 0.05), transparent 50%),
     var(--paper);
   color: var(--foreground);
-  font-family: var(--font-body-jp), var(--font-body-sc), "Hiragino Sans", "Noto Sans SC", sans-serif;
+  font-family: var(--font-body-jp), "Hiragino Sans", "Noto Sans JP", sans-serif;
 }
 
 a {
