@@ -60,6 +60,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: toPublicUploadUrl(filename) });
   } catch (err) {
     console.error("[upload]", err);
-    return NextResponse.json({ error: "图片保存失败，请稍后重试" }, { status: 500 });
+    const message =
+      err instanceof Error && err.message
+        ? err.message
+        : "图片保存失败，请稍后重试";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
